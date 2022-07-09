@@ -60,7 +60,8 @@ const angRad = (a: number) : number => a * (Math.PI / 180)
  * @param   {number[]} offset : offset coordinates
  * @returns {number[]}        : coordinates
  */
-const cartesXY = (r: number, a: number, offset: number[]) : number[] => [ r * Math.cos(angRad(a)) + offset[0], r * Math.sin(angRad(a)) + offset[1] ]
+const cartesXY = (r: number, a: number, offset: [number, number]) : number[] =>
+  [ r * Math.cos(angRad(a)) + offset[0], r * Math.sin(angRad(a)) + offset[1] ]
 
 /**
  * Keeps a given value inside the given interval based on a min and max value.
@@ -68,7 +69,7 @@ const cartesXY = (r: number, a: number, offset: number[]) : number[] => [ r * Ma
  * @param   {number[]} i : interval
  * @returns {number}     : limited value
  */
-const limit = (n: number, i: number[]) : number => Math.min(Math.max(n, i[0]), i[1])
+const limit = (n: number, i: [number, number]) : number => Math.min(Math.max(n, i[0]), i[1])
 
 /**
  * Checks whether the given number is inside the given interval
@@ -77,7 +78,7 @@ const limit = (n: number, i: number[]) : number => Math.min(Math.max(n, i[0]), i
  * @param   {boolean}  inc : should the interval be inclusive or not
  * @returns {boolean}      : whether the number is inside the interval or not
  */
-const between = (n: number, i: number[], inc: boolean = false): boolean => {
+const between = (n: number, i: [number, number], inc: boolean = false): boolean => {
   const [min, max] = i
   if (max < min)
     throw new Error(`The given interval is invalid! Min value (${min}) > Max value (${max}) !`)
@@ -91,7 +92,8 @@ const between = (n: number, i: number[], inc: boolean = false): boolean => {
  * @param   {number} max : max value
  * @returns {number}     : random number
  */
-const randomInt = (min: number, max: number) : number => Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min)
+const randomInt = (min: number, max: number) : number =>
+  Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min)
 
 /**
  * Returns the angle between x axis and a point based on its coordinates
@@ -99,18 +101,37 @@ const randomInt = (min: number, max: number) : number => Math.floor(Math.random(
  * @param   {number[]} target : target coordinates
  * @returns {number}          : resulting theta angle
  */
- const arctangent = (origin: number[], target: number[]) => {
+ const arctangent = (origin: [number, number], target: [number, number]) => {
   const [ox, oy] = origin,
         [tx, ty] = target;
   const dx = ox - tx,
         dy = oy - ty;
 
   let theta = Math.atan2(-dy, -dx);
-
   theta *= 180 / Math.PI;
-  if (theta < 0) theta += 360;
 
+  if (theta < 0) theta += 360;
   return theta;
+}
+
+/**
+ * Drifts aside cartesian coords based on base coords and vBox size in order to prevent 
+ * @param   {number[]} coords : base coords
+ * @param   {number}   vbSize : vBox size
+ * @returns {number[]}        : drifted coords
+ */
+ const driftCoords = (coords: [number, number], vbSize: number) : number[] => {
+  const [x, y] = coords
+  const middle = vbSize / 2, xMin = vbSize * .15, xMax = vbSize * .85, vShift = vbSize * .08
+  const xAroundMiddle = between(x, [xMin, xMax])
+
+  let drftX;
+  if (xAroundMiddle) {
+    if (x < middle) drftX = x - (xMin * .65)
+    else drftX = x + (xMax * .65)
+  } else drftX = x
+
+  return [ drftX, limit(y, [vShift, vbSize - vShift]) ]
 }
 
 export {
@@ -125,5 +146,6 @@ export {
   limit,
   between,
   randomInt,
-  arctangent
+  arctangent,
+  driftCoords
 }

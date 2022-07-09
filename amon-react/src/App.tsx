@@ -1,23 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+import { between } from './utils/math'
+
+const num = 5, min = 0, max = 10
+
+console.log(between(num, [min, max]))
 
 const App = () => (
   <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
+    <p>Test Typescript tuples:</p>
+    <p>{num} is between {min} and {max} : {between(num, [min, max])}</p>
   </div>
 )
 
