@@ -5,12 +5,10 @@ import { between } from './utils/math'
 
 const num = 5, min = 0, max = 10
 
-console.log(between(num, [min, max]))
-
 const App = () => (
   <div className="App">
     <p>Test Typescript tuples:</p>
-    <p>{num} is between {min} and {max} : {between(num, [min, max])}</p>
+    <p>{num} is between {min} and {max} : {`${between(num, [min, max])}`}</p>
   </div>
 )
 

@@ -39,4 +39,5 @@ export {
   camelize,
   unCamelize,
   capitalize,
+  sbstr,
 }

@@ -4,7 +4,7 @@
  * @param   {number} r : round value
  * @returns {number}   : rounded number
  */
-const round = (n: number, r: number): number => Math.round(n * r) /r
+const round = (n: number, r: number): number => Math.round(n * r) / r
 
 /**
  * Returns the percentage based on a given numerator and total
@@ -20,14 +20,14 @@ const percent = (n: number, t: number): number => n / t * 100 || 0
  * @param   {number} p : percentage to apply
  * @returns {number}   : number
  */
-const appPercent = (t: number, p: number) : number => t * p * 0.01
+const appPercent = (t: number, p: number): number => t * p * 0.01
 
 /**
  * Returns the circumference of a circle based on its radius
  * @param   {number} r : radius
  * @returns {number}   : circumference
  */
-const circ = (r: number) : number => 2 * Math.PI * r
+const circ = (r: number): number => 2 * Math.PI * r
 
 /**
  * Returns full circle rotation based on a percentage
@@ -50,7 +50,7 @@ const strokeOffset = (peri: number, perc: number): number => peri - peri * perc 
  * @param   {number} a : angle 
  * @returns {number}   : radians
  */
-const angRad = (a: number) : number => a * (Math.PI / 180)
+const angRad = (a: number): number => a * (Math.PI / 180)
 
 /**
  * Returns cartesian coordinates based on a radius, an angle and offset coordinates
@@ -60,8 +60,8 @@ const angRad = (a: number) : number => a * (Math.PI / 180)
  * @param   {number[]} offset : offset coordinates
  * @returns {number[]}        : coordinates
  */
-const cartesXY = (r: number, a: number, offset: [number, number]) : number[] =>
-  [ r * Math.cos(angRad(a)) + offset[0], r * Math.sin(angRad(a)) + offset[1] ]
+const cartesXY = (r: number, a: number, offset: [number, number]): [number, number] =>
+  [r * Math.cos(angRad(a)) + offset[0], r * Math.sin(angRad(a)) + offset[1]]
 
 /**
  * Keeps a given value inside the given interval based on a min and max value.
@@ -69,7 +69,7 @@ const cartesXY = (r: number, a: number, offset: [number, number]) : number[] =>
  * @param   {number[]} i : interval
  * @returns {number}     : limited value
  */
-const limit = (n: number, i: [number, number]) : number => Math.min(Math.max(n, i[0]), i[1])
+const limit = (n: number, [min, max]: [number, number]): number => Math.min(Math.max(n, min), max)
 
 /**
  * Checks whether the given number is inside the given interval
@@ -78,13 +78,8 @@ const limit = (n: number, i: [number, number]) : number => Math.min(Math.max(n, 
  * @param   {boolean}  inc : should the interval be inclusive or not
  * @returns {boolean}      : whether the number is inside the interval or not
  */
-const between = (n: number, i: [number, number], inc: boolean = false): boolean => {
-  const [min, max] = i
-  if (max < min)
-    throw new Error(`The given interval is invalid! Min value (${min}) > Max value (${max}) !`)
-
-  return inc ? (n >= min && n <= max) : (n > min && n < max)
-}
+const between = (n: number, [min, max]: [number, number], inc: boolean = false): boolean =>
+  inc ? (n >= min && n <= max) : (n > min && n < max)
 
 /**
  * Generates a random number between min and max value
@@ -92,7 +87,7 @@ const between = (n: number, i: [number, number], inc: boolean = false): boolean 
  * @param   {number} max : max value
  * @returns {number}     : random number
  */
-const randomInt = (min: number, max: number) : number =>
+const randomInt = (min: number, max: number): number =>
   Math.floor(Math.random() * (Math.floor(max) - Math.ceil(min) + 1)) + Math.ceil(min)
 
 /**
@@ -101,17 +96,14 @@ const randomInt = (min: number, max: number) : number =>
  * @param   {number[]} target : target coordinates
  * @returns {number}          : resulting theta angle
  */
- const arctangent = (origin: [number, number], target: [number, number]) => {
-  const [ox, oy] = origin,
-        [tx, ty] = target;
-  const dx = ox - tx,
-        dy = oy - ty;
+const arctangent = ([ox, oy]: [number, number], [tx, ty]: [number, number]): number => {
+  const dx = ox - tx, dy = oy - ty
 
-  let theta = Math.atan2(-dy, -dx);
-  theta *= 180 / Math.PI;
+  let theta = Math.atan2(-dy, -dx)
+  theta *= 180 / Math.PI
 
-  if (theta < 0) theta += 360;
-  return theta;
+  if (theta < 0) theta += 360
+  return theta
 }
 
 /**
@@ -120,8 +112,7 @@ const randomInt = (min: number, max: number) : number =>
  * @param   {number}   vbSize : vBox size
  * @returns {number[]}        : drifted coords
  */
- const driftCoords = (coords: [number, number], vbSize: number) : number[] => {
-  const [x, y] = coords
+const driftCoords = ([x, y]: [number, number], vbSize: number): [number, number] => {
   const middle = vbSize / 2, xMin = vbSize * .15, xMax = vbSize * .85, vShift = vbSize * .08
   const xAroundMiddle = between(x, [xMin, xMax])
 
@@ -131,7 +122,7 @@ const randomInt = (min: number, max: number) : number =>
     else drftX = x + (xMax * .65)
   } else drftX = x
 
-  return [ drftX, limit(y, [vShift, vbSize - vShift]) ]
+  return [drftX, limit(y, [vShift, vbSize - vShift])]
 }
 
 export {
