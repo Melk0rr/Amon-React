@@ -99,7 +99,7 @@ const randomInt = (min: number, max: number): number =>
 const arctangent = ([ox, oy]: [number, number], [tx, ty]: [number, number]): number => {
   const dx = ox - tx, dy = oy - ty
 
-  let theta = Math.atan2(-dy, -dx)
+  let theta: number = Math.atan2(-dy, -dx)
   theta *= 180 / Math.PI
 
   if (theta < 0) theta += 360
@@ -113,10 +113,14 @@ const arctangent = ([ox, oy]: [number, number], [tx, ty]: [number, number]): num
  * @returns {number[]}        : drifted coords
  */
 const driftCoords = ([x, y]: [number, number], vbSize: number): [number, number] => {
-  const middle = vbSize / 2, xMin = vbSize * .15, xMax = vbSize * .85, vShift = vbSize * .08
-  const xAroundMiddle = between(x, [xMin, xMax])
+  const
+    middle: number = vbSize / 2,
+    xMin: number = vbSize * .15,
+    xMax: number = vbSize * .85,
+    vShift: number = vbSize * .08
+  const xAroundMiddle: boolean = between(x, [xMin, xMax])
 
-  let drftX;
+  let drftX: number;
   if (xAroundMiddle) {
     if (x < middle) drftX = x - (xMin * .65)
     else drftX = x + (xMax * .65)
