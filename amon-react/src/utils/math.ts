@@ -131,6 +131,7 @@ const driftCoords = ([x, y]: [number, number], vbSize: number): [number, number]
 
 export {
   round,
+  randomInt,
   percent,
   appPercent,
   circ,
@@ -140,7 +141,6 @@ export {
   cartesXY,
   limit,
   between,
-  randomInt,
   arctangent,
   driftCoords
 }
