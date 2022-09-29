@@ -24,6 +24,9 @@
     "eject": "react-scripts eject",
     "test:tsc": "tsc -p tsconfig.test.json -w"
   },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
