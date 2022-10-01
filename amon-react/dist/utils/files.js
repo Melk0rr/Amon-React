@@ -17,4 +17,15 @@ const loadFile = (f) => {
         reader.readAsText(f);
     });
 };
-export { getExtension, loadFile, };
+/**
+ * Checks if the imported is valid
+ * @param  {File}     upl            : upload input
+ * @param  {string[]} validExtension : expected extensions in order
+ * @return {void}
+ */
+const checkImport = (upl, validExtension) => {
+    const ext = getExtension(upl);
+    if (!validExtension.includes(ext))
+        throw new TypeError("File should be a ." + validExtension + " file !");
+};
+export { getExtension, loadFile, checkImport, };
