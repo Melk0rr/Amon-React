@@ -19,7 +19,19 @@ const loadFile = (f: File): Promise<any> => {
   })
 }
 
+/**
+ * Checks if the imported is valid
+ * @param  {File}     upl            : upload input
+ * @param  {string[]} validExtension : expected extensions in order
+ * @return {void}
+ */
+const checkImport = (upl: File, validExtension: string[]): void => {
+  const ext = getExtension(upl)
+  if (!validExtension.includes(ext)) throw new TypeError("File should be a ." + validExtension + " file !")
+}
+
 export {
   getExtension,
   loadFile,
+  checkImport,
 }
