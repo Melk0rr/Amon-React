@@ -22,7 +22,7 @@ const unCamelize = (str: string): string =>
 const capitalize = (str: string): string => str[0].toUpperCase() + str.slice(1)
 
 /**
- * Returns the substring between the two given substring
+ * Returns the substring between two given substring
  * @param   {string}  str : string to use
  * @param   {strin[]} sbs : substrings to use as delimiter
  * @returns {string}      : substring
@@ -30,8 +30,8 @@ const capitalize = (str: string): string => str[0].toUpperCase() + str.slice(1)
 const sbstr = (str: string, sbs: [string, string]): string => {
   const [first, second] = sbs
   const
-    i1: number = str.indexOf(first),
-    i2: number = i1 + str.substring(i1).trim().indexOf(second)
+    i1 = str.indexOf(first),
+    i2 = i1 + str.substring(i1).trim().indexOf(second)
 
   return str.substring(i1 + first.length, i2 + 1).trim()
 }
@@ -48,12 +48,10 @@ const zeroPad = (val: any, len: number): string => `${val}`.padStart(len, '0')
  * Generates a unique random ID
  * @returns {string} : UEID
  */
-const uuid = (): string => {
-  const
-    first: number = Math.random() * 46656 | 0,
-    second: number = Math.random() * 46656 | 0
-  return ("000" + first.toString(36)).slice(-3) + ("000" + second.toString(36)).slice(-3)
-}
+const uuid = (): string =>
+  ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3) + 
+  ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3)
+
 
 export {
   camelize,

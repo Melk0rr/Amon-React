@@ -17,7 +17,7 @@ const unCamelize = (str) => (str.match(/[A-Za-z][a-z]*/g) || []).map(w => w.char
  */
 const capitalize = (str) => str[0].toUpperCase() + str.slice(1);
 /**
- * Returns the substring between the two given substring
+ * Returns the substring between two given substring
  * @param   {string}  str : string to use
  * @param   {strin[]} sbs : substrings to use as delimiter
  * @returns {string}      : substring
@@ -38,8 +38,6 @@ const zeroPad = (val, len) => `${val}`.padStart(len, '0');
  * Generates a unique random ID
  * @returns {string} : UEID
  */
-const uuid = () => {
-    const first = Math.random() * 46656 | 0, second = Math.random() * 46656 | 0;
-    return ("000" + first.toString(36)).slice(-3) + ("000" + second.toString(36)).slice(-3);
-};
+const uuid = () => ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3) +
+    ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3);
 export { camelize, unCamelize, capitalize, sbstr, zeroPad, uuid };
