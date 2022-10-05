@@ -1,17 +1,27 @@
 import * as Maths from "./math"
 import * as Strings from "./strings"
-import { BaseObject } from "./interfaces"
 
 const { zeroPad } = Strings
 
-interface TimeObj {
+type DayIndex = 0|1|2|3|4|5|6
+type BaseUnit = 1|2|3|4|5|6|7|8|9
+type Unit = 0|BaseUnit
+type MonthNumber = BaseUnit|10|11|12
+type DayNumber = BaseUnit|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31
+type Hour = Unit|10|11|12|13|14|15|16|17|18|19|20|21|22|23
+type MinutesSeconds = Unit|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|
+                      30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+
+/**
+ * Time object containing year, month, day, hour, min and sec values
+ */
+type TimeObj = {
   year: number,
-  month: number,
-  day: number,
-  hour: number,
-  min: number,
-  sec: number,
-  [key: string]: any
+  month: MonthNumber,
+  day: DayNumber,
+  hour: Hour,
+  min: MinutesSeconds,
+  sec: MinutesSeconds,
 }
 
 class Time extends Date {
@@ -46,7 +56,7 @@ class Time extends Date {
    * Class constructor
    * @param {Object} dateObj : object containing 
    */
-  constructor(date: TimeObj) {
+  constructor(date: TimeObj | Date | string) {
 
     const newDate = Time.construct(date)
 
@@ -57,17 +67,24 @@ class Time extends Date {
 
   /**
    * Returns real month of the year number (default Date first month is 0: January)
-   * @param   {Date} date : date object
-   * @returns {number}    : real month number
+   * @param   {Date} date   : date object
+   * @returns {MonthNumber} : real month number
    */
-  public static getRealMonth = (date: Date): number => date.getMonth() + 1
+  public static getRealMonth = (date: Date): MonthNumber => date.getMonth() + 1 as MonthNumber
 
   /**
    * Returns object containing time infos
    * @returns {Object} : time object
    */
-  private static getDateObj = (date: Date | Time): BaseObject =>
-    ({ year: date.getFullYear(), month: Time.getRealMonth(date), day: date.getDate(), hour: date.getHours(), min: date.getMinutes(), sec: date.getSeconds() })
+  private static getDateObj = (date: Date | Time): TimeObj =>
+    ({
+      year: date.getFullYear(),
+      month: Time.getRealMonth(date),
+      day: date.getDate() as DayNumber,
+      hour: date.getHours() as Hour,
+      min: date.getMinutes() as MinutesSeconds,
+      sec: date.getSeconds() as MinutesSeconds
+    })
  
   /**
    * Checks if the given year is a lap year
@@ -80,9 +97,9 @@ class Time extends Date {
    * Gets given month number of days based on given year and month number
    * @param   {number} month : month number
    * @param   {number} year  : year
-   * @returns {number}       : number of days
+   * @returns {DayNumber}       : number of days
    */
-  public static getMonthDays = (month: number, year: number) => {
+  public static getMonthDays = (month: number, year: number): DayNumber => {
     if (month < 1 || month > 12)
       throw new Error(`Invalid month number ${month} provided, expected a number between 1 and 12 !`)
 
@@ -106,73 +123,72 @@ class Time extends Date {
   /**
    * Parse month from date string
    * @param   {string} dateStr : date string to parse
-   * @returns {number}         : month
+   * @returns {MonthNumber}         : month
    */
-  private static getMonthFromDateString = (dateStr: string): number => {
-    const month = dateStr.length > 4
-                ? dateStr.length === 5 ? parseInt(dateStr.slice(4, 5), 10) : parseInt(dateStr.slice(4, 6), 10)
-                : 1
-
-    if (month < 1 || month > 13)
-      throw new Error(`Invalid month, expected a value between 1 and 12!`)
-    
-    return month
-  }
+  private static getMonthFromDateString = (dateStr: string): MonthNumber =>
+    Time.getElementFromDateString(dateStr, [1, 13], 1, [4, 5, 6],
+      `Invalid month, expected a value between 1 and 12!`) as MonthNumber
 
   /**
    * Parse day from date string
-   * @param   {string} dateStr : date string to parse
-   * @param   {number} year    : year, used to check max day value
-   * @param   {number} month   : month, used to check max day value
-   * @returns {number}         : day
+   * @param   {string}    dateStr : date string to parse
+   * @param   {number}    year    : year, used to check max day value
+   * @param   {number}    month   : month, used to check max day value
+   * @returns {DayNumber}         : day
    */
-  private static getDayFromDateString = (dateStr: string, year: number, month: number): number => {
+  private static getDayFromDateString = (dateStr: string, year: number, month: number): DayNumber => {
     const maxDays = Time.getMonthDays(month, year)
 
     return Time.getElementFromDateString(dateStr, [1, maxDays], 1, [6, 7, 8],
-      `Invalid day, expected a value between 1 and ${maxDays}!`)
+      `Invalid day, expected a value between 1 and ${maxDays}!`) as DayNumber
   }
 
   /**
    * Parse hours from date string
    * @param   {string} dateStr : date string to parse
-   * @returns {number}         : hours
+   * @returns {Hour}           : hours
    */
-  private static getHoursFromDateString = (dateStr: string): number =>
+  private static getHoursFromDateString = (dateStr: string): Hour =>
     Time.getElementFromDateString(dateStr, [0, 23], 1, [8, 9, 10],
-      "Invalid hour, expected a value between 0 and 23!")
+      "Invalid hour, expected a value between 0 and 23!") as Hour
 
   /**
    * Parse minutes from date string
-   * @param   {string} dateStr : date string to parse
-   * @returns {number}         : minutes
+   * @param   {string}         dateStr : date string to parse
+   * @returns {MinutesSeconds}         : minutes
    */
-  private static getMinutesFromDateString = (dateStr: string): number => 
+  private static getMinutesFromDateString = (dateStr: string): MinutesSeconds => 
     Time.getElementFromDateString(dateStr, [0, 59], 0, [10, 11, 12],
-      "Invalid minutes, expected a value between 0 and 59!")
+      "Invalid minutes, expected a value between 0 and 59!") as MinutesSeconds
 
 
   /**
    * Parse seconds from date string
-   * @param   {string} dateStr : date string to parse
-   * @returns {number}         : seconds
+   * @param   {string}         dateStr : date string to parse
+   * @returns {MinutesSeconds}         : seconds
    */
-  private static getSecondsFromDateString = (dateStr: string): number =>
+  private static getSecondsFromDateString = (dateStr: string): MinutesSeconds =>
     Time.getElementFromDateString(dateStr, [0, 59], 0, [12, 13, 14],
-      "Invalid seconds, expected a value between 0 and 59!")
+      "Invalid seconds, expected a value between 0 and 59!") as MinutesSeconds
 
 
-  private static getElementFromDateString = (
-    dateStr: string,
-    boundaries: [number, number],
-    defaultValue: number,
-    slice: [number, number, number],
-    error: string): number =>
+  /**
+   * Parse element from date string based on multiple parameters
+   * @param   {string}   dateStr      : date string to parse
+   * @param   {number[]} boundaries   : boundaries to limit the value of the element
+   * @param   {number}   defaultValue : default value for the element
+   * @param   {number[]} slice        : slice indexes
+   * @param   {string}   error        : error message
+   * @returns {number}                : date element
+   */
+  private static getElementFromDateString = (dateStr: string, boundaries: [number, number],
+    defaultValue: number, slice: [number, number, number], error: string): number =>
   {
     const [ sMin, sMid, sMax ] = slice
     const [ bMin, bMax ] = boundaries
     const el = dateStr.length > sMin
-             ? dateStr.length === sMin ? parseInt(dateStr.slice(sMin, sMid), 10) : parseInt(dateStr.slice(sMin, sMax), 10)
+             ? dateStr.length === sMin  ? parseInt(dateStr.slice(sMin, sMid), 10)
+                                        : parseInt(dateStr.slice(sMin, sMax), 10)
              : defaultValue
     
     if (el < bMin || el > bMax)
@@ -203,10 +219,10 @@ class Time extends Date {
 
   /**
    * Handles different argument type passed to constructor
-   * @param {Date | Time | string | BaseObject} date 
-   * @returns 
+   * @param {TimeObj | Date | string} date : initial date
+   * @returns {TimeObj} : time object with year, month, day, hour, min, sec
    */
-  private static construct = (date: Date | Time | string | BaseObject) => {
+  private static construct = (date: TimeObj | Date | string): TimeObj => {
     let res;
 
     if (date instanceof Date) {
@@ -225,9 +241,9 @@ class Time extends Date {
 
   /**
    * Returns today date string
-   * @returns {string} : today string
+   * @returns {TimeObj} : today date object
    */
-  private static today = () => Time.getDateObj(new Date())
+  private static today = (): TimeObj => Time.getDateObj(new Date())
 
   /**
    * Converts a formated dateString to a dateObj
@@ -235,12 +251,50 @@ class Time extends Date {
    * @returns 
    */
   private static str2dateObj = (dateStr: string): TimeObj => {
-    const [ ymd, hms ] = dateStr.split(' ');
+    // Split date and time parts
+    const [ ymd, hms ] = dateStr.split(' ')
+
+    // Split year (y), month (m), day (d); and hour (h), min (m), seconds (s)
     const ymdArr = ymd.split('-'),
-          hmsArr = hms.split(':');
-    const timeArr = [...ymdArr, ...hmsArr].map(t => parseInt(t, 10));
-    return { year: timeArr[0], month: timeArr[1], day: timeArr[2], hour: timeArr[3], min: timeArr[4], sec: timeArr[5] };
+          hmsArr = hms.split(':')
+
+    // Merging both arrays and casting to integers
+    const timeArr = [...ymdArr, ...hmsArr].map(t => parseInt(t, 10))
+
+    return {
+      year: timeArr[0],
+      month: timeArr[1] as MonthNumber,
+      day: timeArr[2] as DayNumber,
+      hour: timeArr[3] as Hour,
+      min: timeArr[4] as MinutesSeconds,
+      sec: timeArr[5] as MinutesSeconds
+    }
   }
+
+  /**
+   * Returns min and max time of a given array of times
+   * @param   {Time[]} dates : array of time
+   * @returns {Time[]}       : min, max time
+   */
+  public static getPeriod = (dates: Time[]): [Time, Time] => {
+    dates.sort((a, b) => a.getTime() - b.getTime())
+    return [dates[0], dates[-1]]
+  }
+
+  /**
+   * Gets day of week number of the first day of the given month
+   * @param   {number} month : month number
+   * @param   {number} year  : year
+   * @returns {DayIndex}   : first day of month
+   */
+  public static getMonthFirstDay = (month: number, year: number): DayIndex =>
+    (new Time(`${year}-${zeroPad(month, 2)}-01`).getMonDay())
+
+  /**
+   * Returns day of week index shifted, so that monday is 0 (first day of the week)
+   * @returns {DayIndex} : day index
+   */
+  public getMonDay = (): DayIndex => this.getDay() === 0 ? 6 : this.getDay() - 1 as DayIndex
 }
 
 export default Time
