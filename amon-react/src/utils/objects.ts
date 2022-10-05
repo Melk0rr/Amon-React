@@ -1,4 +1,4 @@
-import { BaseObject } from "./interfaces";
+import { BaseObject } from "./types"
 
 /**
  * Filter properties of a given object based on a list of keys to keep
