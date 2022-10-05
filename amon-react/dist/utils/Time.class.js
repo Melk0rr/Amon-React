@@ -90,10 +90,10 @@ class Time extends Date {
     static getMonthFromDateString = (dateStr) => Time.getElementFromDateString(dateStr, [1, 13], 1, [4, 5, 6], `Invalid month, expected a value between 1 and 12!`);
     /**
      * Parse day from date string
-     * @param   {string}    dateStr : date string to parse
-     * @param   {number}    year    : year, used to check max day value
-     * @param   {number}    month   : month, used to check max day value
-     * @returns {DayNumber}         : day
+     * @param   {string}      dateStr : date string to parse
+     * @param   {number}      year    : year, used to check max day value
+     * @param   {MonthNumber} month   : month, used to check max day value
+     * @returns {DayNumber}           : day
      */
     static getDayFromDateString = (dateStr, year, month) => {
         const maxDays = Time.getMonthDays(month, year);
@@ -217,5 +217,48 @@ class Time extends Date {
      * @returns {DayIndex} : day index
      */
     getMonDay = () => this.getDay() === 0 ? 6 : this.getDay() - 1;
+    /**
+     * Checks if given date1 is before date2
+     * @param   {Date|Time} date1 : first date
+     * @param   {Date|Time} date2 : second date
+     * @returns {boolean}         : whether first date is before second date or not
+     */
+    static isBefore = (date1, date2) => date1 < date2;
+    /**
+     * Checks if given date1 is after date2
+     * @param   {Date|Time} date1 : first date
+     * @param   {Date|Time} date2 : second date
+     * @returns {boolean}         : whether first date is after second date or not
+     */
+    static isAfter = (date1, date2) => date1 > date2;
+    /**
+     * Checks if given date1 is between date2 and date3
+     * @param   {Date|Time} date1 : first date
+     * @param   {Date|Time} date2 : second date
+     * @param   {Date|Time} date3 : third date
+     * @returns {boolean}         : whether first date is between second and third date or not
+     */
+    static isBetween = (date1, date2, date3) => (!date1 || !date2 || !date3) ? false : (date1 > date2 && date1 < date3);
+    /**
+     * Checks if two dates are the same month and year
+     * @param   {Date|Time} date1 : date 1
+     * @param   {Date|Time} date2 : date 2
+     * @returns {boolean}         : whether the two dates are same month and year or not
+     */
+    static isSameMonth = (date1, date2) => (!date1 || !date2)
+        ? false
+        : ((date1.getFullYear() === date2.getFullYear()) &&
+            (Time.getRealMonth(date1) === Time.getRealMonth(date2)));
+    /**
+     * Checks if two dates are the same date, month and year
+     * @param   {Date|Time} date1 : date 1
+     * @param   {Date|Time} date2 : date 2
+     * @returns {boolean}         : whether the two dates are same date, month and year or not
+     */
+    static isSameDay = (date1, date2) => {
+        if (!date1 || !date2)
+            return false;
+        return (Time.isSameMonth(date1, date2) && (date1.getDate() === date2.getDate()));
+    };
 }
 export default Time;
