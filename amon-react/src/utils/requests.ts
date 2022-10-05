@@ -1,4 +1,4 @@
-import { HttpRequestData } from "./types"
+type HttpRequestData = Document | XMLHttpRequestBodyInit
 
 /**
  * Request ready state handling
