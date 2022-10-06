@@ -1,5 +1,6 @@
 import * as Maths from "./math"
 import * as Strings from "./strings"
+import { BaseObject } from "./types"
 
 const { zeroPad } = Strings
 
@@ -66,13 +67,6 @@ class Time extends Date {
   }
 
   /**
-   * Returns real month of the year number (default Date first month is 0: January)
-   * @param   {Date} date   : date object
-   * @returns {MonthNumber} : real month number
-   */
-  public static getRealMonth = (date: Date): MonthNumber => date.getMonth() + 1 as MonthNumber
-
-  /**
    * Returns object containing time infos
    * @returns {Object} : time object
    */
@@ -85,28 +79,6 @@ class Time extends Date {
       min: date.getMinutes() as MinutesSeconds,
       sec: date.getSeconds() as MinutesSeconds
     })
- 
-  /**
-   * Checks if the given year is a lap year
-   * @param   {number}  year : year to check
-   * @returns {boolean}      : whether the given year is a lap year or not
-   */
-  public static isLapYear = (year: number): boolean => year % 4 === 0
-
-  /**
-   * Gets given month number of days based on given year and month number
-   * @param   {number} month : month number
-   * @param   {number} year  : year
-   * @returns {DayNumber}       : number of days
-   */
-  public static getMonthDays = (month: number, year: number): DayNumber => {
-    if (month < 1 || month > 12)
-      throw new Error(`Invalid month number ${month} provided, expected a number between 1 and 12 !`)
-
-    return month === 2
-      ? Time.isLapYear(year) ? 29 : 28
-      : [4, 6, 9, 11].includes(month) ? 30 : 31
-  }
 
   /**
    * Parse year from date string
@@ -272,6 +244,28 @@ class Time extends Date {
   }
 
   /**
+   * Checks if the given year is a lap year
+   * @param   {number}  year : year to check
+   * @returns {boolean}      : whether the given year is a lap year or not
+   */
+  public static isLapYear = (year: number): boolean => year % 4 === 0
+
+   /**
+    * Gets given month number of days based on given year and month number
+    * @param   {number} month : month number
+    * @param   {number} year  : year
+    * @returns {DayNumber}       : number of days
+    */
+  public static getMonthDays = (month: number, year: number): DayNumber => {
+    if (month < 1 || month > 12)
+      throw new Error(`Invalid month number ${month} provided, expected a number between 1 and 12 !`)
+
+    return month === 2
+      ? Time.isLapYear(year) ? 29 : 28
+      : [4, 6, 9, 11].includes(month) ? 30 : 31
+  }
+
+  /**
    * Returns min and max time of a given array of times
    * @param   {Time[]} dates : array of time
    * @returns {Time[]}       : min, max time
@@ -291,10 +285,35 @@ class Time extends Date {
     (new Time(`${year}-${zeroPad(month, 2)}-01`).getMonDay())
 
   /**
+   * Returns real month of the year number (default Date first month is 0: January)
+   * @param   {Date} date   : date object
+   * @returns {MonthNumber} : real month number
+   */
+  public static getRealMonth = (date: Date): MonthNumber => date.getMonth() + 1 as MonthNumber
+
+  /**
    * Returns day of week index shifted, so that monday is 0 (first day of the week)
    * @returns {DayIndex} : day index
    */
   public getMonDay = (): DayIndex => this.getDay() === 0 ? 6 : this.getDay() - 1 as DayIndex
+
+  /**
+   * Gets the month and year before the given month and year
+   * @param   {MonthNumber} month : month number
+   * @param   {number}      year  : year
+   * @returns {BaseObject}        : previous month and year couple
+   */
+  public static getPreviousMonth = (month: MonthNumber, year: number): BaseObject =>
+    ({ month: month > 1 ? month - 1 : 12, year: month > 1 ? year : year - 1 })
+
+ /**
+  * Gets the month and year after the given month and year
+  * @param   {MonthNumber} month : month number
+  * @param   {number}      year  : year
+  * @returns {BaseObject}        : next month and year couple
+  */
+  public static getNextMonth = (month: MonthNumber, year: number): BaseObject =>
+    ({ month: month < 12 ? month + 1 : 1, year: month < 12 ? year : year + 1 })
 
   /**
    * Checks if given date1 is before date2

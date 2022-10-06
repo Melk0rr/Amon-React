@@ -36,12 +36,6 @@ class Time extends Date {
         super(year, month - 1, day, hour, min, sec);
     }
     /**
-     * Returns real month of the year number (default Date first month is 0: January)
-     * @param   {Date} date   : date object
-     * @returns {MonthNumber} : real month number
-     */
-    static getRealMonth = (date) => date.getMonth() + 1;
-    /**
      * Returns object containing time infos
      * @returns {Object} : time object
      */
@@ -53,25 +47,6 @@ class Time extends Date {
         min: date.getMinutes(),
         sec: date.getSeconds()
     });
-    /**
-     * Checks if the given year is a lap year
-     * @param   {number}  year : year to check
-     * @returns {boolean}      : whether the given year is a lap year or not
-     */
-    static isLapYear = (year) => year % 4 === 0;
-    /**
-     * Gets given month number of days based on given year and month number
-     * @param   {number} month : month number
-     * @param   {number} year  : year
-     * @returns {DayNumber}       : number of days
-     */
-    static getMonthDays = (month, year) => {
-        if (month < 1 || month > 12)
-            throw new Error(`Invalid month number ${month} provided, expected a number between 1 and 12 !`);
-        return month === 2
-            ? Time.isLapYear(year) ? 29 : 28
-            : [4, 6, 9, 11].includes(month) ? 30 : 31;
-    };
     /**
      * Parse year from date string
      * @param   {string} dateStr : date string to parse
@@ -197,6 +172,25 @@ class Time extends Date {
         };
     };
     /**
+     * Checks if the given year is a lap year
+     * @param   {number}  year : year to check
+     * @returns {boolean}      : whether the given year is a lap year or not
+     */
+    static isLapYear = (year) => year % 4 === 0;
+    /**
+     * Gets given month number of days based on given year and month number
+     * @param   {number} month : month number
+     * @param   {number} year  : year
+     * @returns {DayNumber}       : number of days
+     */
+    static getMonthDays = (month, year) => {
+        if (month < 1 || month > 12)
+            throw new Error(`Invalid month number ${month} provided, expected a number between 1 and 12 !`);
+        return month === 2
+            ? Time.isLapYear(year) ? 29 : 28
+            : [4, 6, 9, 11].includes(month) ? 30 : 31;
+    };
+    /**
      * Returns min and max time of a given array of times
      * @param   {Time[]} dates : array of time
      * @returns {Time[]}       : min, max time
@@ -213,10 +207,30 @@ class Time extends Date {
      */
     static getMonthFirstDay = (month, year) => (new Time(`${year}-${zeroPad(month, 2)}-01`).getMonDay());
     /**
+     * Returns real month of the year number (default Date first month is 0: January)
+     * @param   {Date} date   : date object
+     * @returns {MonthNumber} : real month number
+     */
+    static getRealMonth = (date) => date.getMonth() + 1;
+    /**
      * Returns day of week index shifted, so that monday is 0 (first day of the week)
      * @returns {DayIndex} : day index
      */
     getMonDay = () => this.getDay() === 0 ? 6 : this.getDay() - 1;
+    /**
+     * Gets the month and year before the given month and year
+     * @param   {MonthNumber} month : month number
+     * @param   {number}      year  : year
+     * @returns {BaseObject}        : previous month and year couple
+     */
+    static getPreviousMonth = (month, year) => ({ month: month > 1 ? month - 1 : 12, year: month > 1 ? year : year - 1 });
+    /**
+     * Gets the month and year after the given month and year
+     * @param   {MonthNumber} month : month number
+     * @param   {number}      year  : year
+     * @returns {BaseObject}        : next month and year couple
+     */
+    static getNextMonth = (month, year) => ({ month: month < 12 ? month + 1 : 1, year: month < 12 ? year : year + 1 });
     /**
      * Checks if given date1 is before date2
      * @param   {Date|Time} date1 : first date
