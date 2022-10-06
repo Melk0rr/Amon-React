@@ -229,6 +229,30 @@ class Time extends Date {
         return { ...otherDays, Sun };
     };
     /**
+     * Gets the full month name based on the given month number
+     * @param   {MonthNumber} month : month number
+     * @returns {string}            : full month name
+     */
+    static getFullMonth = (month) => Object.values(Time.months)[Maths.limit(month, [0, 11])];
+    /**
+     * Gets the short month name based on the given month number
+     * @param   {MonthNumber} month : month number
+     * @returns {string}            : short month name
+     */
+    static getShortMonth = (month) => Object.keys(Time.months)[Maths.limit(month, [0, 11])];
+    /**
+     * Gets the full day name based on the given day number
+     * @param   {DayNumber} day : day number
+     * @returns {string}        : full day name
+     */
+    static getFullDay = (day) => Object.values(Time.weekDays)[Maths.limit(day, [0, 6])];
+    /**
+     * Gets the full day name based on the given day number
+     * @param   {DayNumber} day : day number
+     * @returns {string}        : short day name
+     */
+    static getShortDay = (day) => Object.keys(Time.weekDays)[Maths.limit(day, [0, 6])];
+    /**
      * Gets the month and year before the given month and year
      * @param   {MonthNumber} month : month number
      * @param   {number}      year  : year

@@ -1,5 +1,6 @@
 import * as Maths from "./math"
 import * as Strings from "./strings"
+import { BaseObject } from "./types"
 
 const { zeroPad } = Strings
 
@@ -319,6 +320,38 @@ class Time extends Date {
     const { Sun, ...otherDays } = Time.weekDays
     return { ...otherDays, Sun }
   }
+
+  /**
+   * Gets the full month name based on the given month number
+   * @param   {MonthNumber} month : month number
+   * @returns {string}            : full month name
+   */
+  public static getFullMonth = (month: MonthNumber): string =>
+    Object.values(Time.months)[Maths.limit(month, [0, 11])]
+
+  /**
+   * Gets the short month name based on the given month number
+   * @param   {MonthNumber} month : month number
+   * @returns {string}            : short month name
+   */
+  public static getShortMonth = (month: MonthNumber): string =>
+    Object.keys(Time.months)[Maths.limit(month, [0, 11])]
+ 
+  /**
+   * Gets the full day name based on the given day number
+   * @param   {DayNumber} day : day number
+   * @returns {string}        : full day name
+   */
+  public static getFullDay = (day: DayNumber): string =>
+    Object.values(Time.weekDays)[Maths.limit(day, [0, 6])]
+ 
+  /**
+   * Gets the full day name based on the given day number
+   * @param   {DayNumber} day : day number
+   * @returns {string}        : short day name
+   */
+  public static getShortDay = (day: DayNumber): string =>
+    Object.keys(Time.weekDays)[Maths.limit(day, [0, 6])]
 
   /**
    * Gets the month and year before the given month and year
