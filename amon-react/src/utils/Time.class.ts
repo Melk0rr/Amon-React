@@ -25,7 +25,16 @@ type TimeObj = {
   sec: MinutesSeconds,
 }
 
+/**
+ * Time class providing various date / time utility functions
+ */
 class Time extends Date {
+
+
+  // ----------------------------------------------------------------
+  // ATTRIBUTES & UTILS ---------------------------------------------
+  // ----------------------------------------------------------------
+
   public static months = {
     Jan: "January",
     Feb: "February",
@@ -65,6 +74,16 @@ class Time extends Date {
     const { year, month, day, hour, min, sec } = newDate
     super(year, month - 1, day, hour, min, sec)
   }
+
+
+
+
+  // ----------------------------------------------------------------
+  // PRIVATE --------------------------------------------------------
+  // ----------------------------------------------------------------
+
+
+
 
   /**
    * Returns object containing time infos
@@ -242,6 +261,14 @@ class Time extends Date {
       sec: timeArr[5] as MinutesSeconds
     }
   }
+
+
+  
+  // ----------------------------------------------------------------
+  // PUBLIC ---------------------------------------------------------
+  // ----------------------------------------------------------------
+
+
 
   /**
    * Checks if the given year is a lap year

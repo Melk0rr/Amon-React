@@ -1,6 +1,12 @@
 import * as Strings from "./strings";
 const { zeroPad } = Strings;
+/**
+ * Time class providing various date / time utility functions
+ */
 class Time extends Date {
+    // ----------------------------------------------------------------
+    // ATTRIBUTES & UTILS ---------------------------------------------
+    // ----------------------------------------------------------------
     static months = {
         Jan: "January",
         Feb: "February",
@@ -35,6 +41,9 @@ class Time extends Date {
         const { year, month, day, hour, min, sec } = newDate;
         super(year, month - 1, day, hour, min, sec);
     }
+    // ----------------------------------------------------------------
+    // PRIVATE --------------------------------------------------------
+    // ----------------------------------------------------------------
     /**
      * Returns object containing time infos
      * @returns {Object} : time object
@@ -171,6 +180,9 @@ class Time extends Date {
             sec: timeArr[5]
         };
     };
+    // ----------------------------------------------------------------
+    // PUBLIC ---------------------------------------------------------
+    // ----------------------------------------------------------------
     /**
      * Checks if the given year is a lap year
      * @param   {number}  year : year to check
