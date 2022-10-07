@@ -441,6 +441,17 @@ class Time extends Date {
   // PUBLIC ---------------------------------------------------------
   // ----------------------------------------------------------------
   
+  /**
+   * Gets the month and year before the current date
+   * @returns {MonthYearObj} : previous month and year couple
+   */
+  public getPreviousMonth = (): MonthYearObj => Time.getDatePreviousMonth(this)
+
+  /**
+   * Gets the month and year after the current date
+   * @returns {MonthYearObj} : next month and year couple
+   */
+  public getNextMonth = (): MonthYearObj => Time.getDateNextMonth(this)
 
   /**
    * Returns day of week index shifted, so that monday is 0 (first day of the week)
