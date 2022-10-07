@@ -440,13 +440,44 @@ class Time extends Date {
   // ----------------------------------------------------------------
   // PUBLIC ---------------------------------------------------------
   // ----------------------------------------------------------------
-
   
+
   /**
    * Returns day of week index shifted, so that monday is 0 (first day of the week)
    * @returns {DayIndex} : day index
    */
   public getMonDay = (): DayIndex => this.getDay() === 0 ? 6 : this.getDay() - 1 as DayIndex
+
+  /**
+   * Checks if two dates are the same date, month and year
+   * @param   {Date|Time} date : date
+   * @returns {boolean}        : whether the two dates are same date, month and year or not
+   */
+  public isSameDay = (date: Date|Time): boolean => Time.isSameDay(this, date)
+
+   /**
+    * Checks if current time is before given date
+    * @param   {Date|Time} date : first date
+    * @returns {boolean}        : whether current date is before second date or not
+    */
+  public isBefore = (date: Date|Time): boolean => Time.isBefore(this, date)
+ 
+   /**
+    * Checks if current time is after given date
+    * @param   {Date|Time} date : first date
+    * @returns {boolean}        : whether current date is after second date or not
+    */
+  public isAfter = (date: Date|Time): boolean => Time.isAfter(this, date)
+ 
+   /**
+    * Checks if current time is between date1 and date2
+    * @param   {Date|Time} date1 : first date
+    * @param   {Date|Time} date2 : second date
+    * @returns {boolean}         : whether current date is between the two given dates or not
+    */
+  public isBetween = (date1: Date|Time, date2: Date|Time): boolean => Time.isBetween(this, date1, date2)
+
+  
 }
 
 export default Time
