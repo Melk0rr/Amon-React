@@ -321,6 +321,34 @@ class Time extends Date {
             return false;
         return (Time.isSameMonth(date1, date2) && (date1.getDate() === date2.getDate()));
     };
+    /**
+     * Returns string based on given date
+     * @param   {Date|Time} date   : date to use
+     * @param   {string}    format : date format
+     * @returns {string}           : date string
+     */
+    static toDateString = (date, format = "YYYY-MM-DD") => {
+        const year = date.getFullYear(), month = zeroPad(date.getMonth() + 1, 2), day = zeroPad(date.getDate(), 2), hour = zeroPad(date.getHours(), 2), min = zeroPad(date.getMinutes(), 2), sec = zeroPad(date.getSeconds(), 2);
+        let res;
+        switch (format) {
+            case "YYYY":
+                res = year.toString();
+                break;
+            case "YYYY-MM":
+                res = year + "-" + month;
+                break;
+            case "YYYY-MM-DD hh:mm":
+                res = year + "-" + month + "-" + day + " " + hour + ":" + min;
+                break;
+            case "YYYY-MM-DD hh:mm:ss":
+                res = year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
+                break;
+            default:
+                res = year + "-" + month + "-" + day;
+                break;
+        }
+        return res;
+    };
     // ----------------------------------------------------------------
     // PUBLIC ---------------------------------------------------------
     // ----------------------------------------------------------------
@@ -334,6 +362,11 @@ class Time extends Date {
      * @returns {DayNumber} : month number of the given instance of Time
      */
     getDay = () => super.getDay();
+    /**
+     * Returns real month of the year number (default Date first month is 0: January)
+     * @returns {MonthNumber} : month number
+     */
+    getRealMonth = () => Time.getRealMonth(this);
     /**
      * Gets the current time full month
      * @returns {string} : full month
@@ -354,6 +387,32 @@ class Time extends Date {
      * @returns {string} : short month
      */
     getShortDay = () => Time.getShortDay(this.getDay());
+    /**
+     * Returns object containing time infos
+     * @returns {TimeObj} : time object
+     */
+    getDateObj = () => Time.getDateObj(this);
+    /**
+     * Returns a string based on time infos
+     * @param   {sttring} format : date format
+     * @returns {string}         : time string
+     */
+    toDateString = (format = "YYYY-MM-DD") => Time.toDateString(this, format);
+    /**
+     * Gets ISO formated date string
+     * @returns {string} : ISO date string
+     */
+    getISOString = () => this.toDateString().split(' ')[0];
+    /**
+     * Checks if year of current time is a lap year
+     * @returns {boolean} : whether the given year is a lap year or not
+     */
+    isLapYear = () => Time.isLapYear(this.getFullYear());
+    /**
+     * Returns a WeekDayNumber based on the the first day of the instance month
+     * @returns {WeekDayNumber} : week day number
+     */
+    getMonthFirstDay = () => Time.getMonthFirstDay(this.getRealMonth(), this.getFullYear());
     /**
      * Gets the month and year before the current date
      * @returns {MonthYearObj} : previous month and year couple
