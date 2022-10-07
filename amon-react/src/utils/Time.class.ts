@@ -4,7 +4,7 @@ import { BaseObject } from "./types"
 
 const { zeroPad } = Strings
 
-type DayIndex = 0|1|2|3|4|5|6
+type WeekDayNumber = 0|1|2|3|4|5|6
 type BaseUnit = 1|2|3|4|5|6|7|8|9
 type Unit = 0|BaseUnit
 type MonthNumber = BaseUnit|10|11|12
@@ -300,9 +300,9 @@ class Time extends Date {
    * Gets day of week number of the first day of the given month
    * @param   {number} month : month number
    * @param   {number} year  : year
-   * @returns {DayIndex}   : first day of month
+   * @returns {WeekDayNumber}   : first day of month
    */
-  public static getMonthFirstDay = (month: number, year: number): DayIndex =>
+  public static getMonthFirstDay = (month: number, year: number): WeekDayNumber =>
     (new Time(`${year}-${zeroPad(month, 2)}-01`).getMonDay())
 
   /**
@@ -339,18 +339,18 @@ class Time extends Date {
  
   /**
    * Gets the full day name based on the given day number
-   * @param   {DayNumber} day : day number
+   * @param   {WeekDayNumber} day : day number
    * @returns {string}        : full day name
    */
-  public static getFullDay = (day: DayNumber): string =>
+  public static getFullDay = (day: WeekDayNumber): string =>
     Object.values(Time.weekDays)[Maths.limit(day, [0, 6])]
  
   /**
    * Gets the full day name based on the given day number
-   * @param   {DayNumber} day : day number
+   * @param   {WeekDayNumber} day : day number
    * @returns {string}        : short day name
    */
-  public static getShortDay = (day: DayNumber): string =>
+  public static getShortDay = (day: WeekDayNumber): string =>
     Object.keys(Time.weekDays)[Maths.limit(day, [0, 6])]
 
   /**
@@ -442,6 +442,42 @@ class Time extends Date {
   // ----------------------------------------------------------------
   
   /**
+   * Implementation of Date method getMonth
+   * @returns {MonthNumber} : month number of the given instance of Time
+   */
+  public getMonth = (): MonthNumber => super.getMonth() as MonthNumber
+
+  /**
+   * Implementation of Date method getDay
+   * @returns {DayNumber} : month number of the given instance of Time
+   */
+  public getDay = (): WeekDayNumber => super.getDay() as WeekDayNumber
+
+  /**
+   * Gets the current time full month
+   * @returns {string} : full month
+   */
+  public getFullMonth = (): string => Time.getFullMonth(this.getMonth())
+
+   /**
+    * Gets the current time short month
+    * @returns {string} : short month
+    */
+  public getShortMonth = (): string => Time.getShortMonth(this.getMonth())
+ 
+   /**
+    * Gets the current time full month
+    * @returns {string} : full month
+    */
+  public getFullDay = (): string => Time.getFullDay(this.getDay())
+ 
+   /**
+    * Gets the current time short month
+    * @returns {string} : short month
+    */
+  public getShortDay = (): string => Time.getShortDay(this.getDay())
+
+  /**
    * Gets the month and year before the current date
    * @returns {MonthYearObj} : previous month and year couple
    */
@@ -455,9 +491,9 @@ class Time extends Date {
 
   /**
    * Returns day of week index shifted, so that monday is 0 (first day of the week)
-   * @returns {DayIndex} : day index
+   * @returns {WeekDayNumber} : day index
    */
-  public getMonDay = (): DayIndex => this.getDay() === 0 ? 6 : this.getDay() - 1 as DayIndex
+  public getMonDay = (): WeekDayNumber => this.getDay() === 0 ? 6 : this.getDay() - 1 as WeekDayNumber
 
   /**
    * Checks if two dates are the same date, month and year

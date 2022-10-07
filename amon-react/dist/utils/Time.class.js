@@ -211,7 +211,7 @@ class Time extends Date {
      * Gets day of week number of the first day of the given month
      * @param   {number} month : month number
      * @param   {number} year  : year
-     * @returns {DayIndex}   : first day of month
+     * @returns {WeekDayNumber}   : first day of month
      */
     static getMonthFirstDay = (month, year) => (new Time(`${year}-${zeroPad(month, 2)}-01`).getMonDay());
     /**
@@ -242,13 +242,13 @@ class Time extends Date {
     static getShortMonth = (month) => Object.keys(Time.months)[Maths.limit(month, [0, 11])];
     /**
      * Gets the full day name based on the given day number
-     * @param   {DayNumber} day : day number
+     * @param   {WeekDayNumber} day : day number
      * @returns {string}        : full day name
      */
     static getFullDay = (day) => Object.values(Time.weekDays)[Maths.limit(day, [0, 6])];
     /**
      * Gets the full day name based on the given day number
-     * @param   {DayNumber} day : day number
+     * @param   {WeekDayNumber} day : day number
      * @returns {string}        : short day name
      */
     static getShortDay = (day) => Object.keys(Time.weekDays)[Maths.limit(day, [0, 6])];
@@ -325,6 +325,36 @@ class Time extends Date {
     // PUBLIC ---------------------------------------------------------
     // ----------------------------------------------------------------
     /**
+     * Implementation of Date method getMonth
+     * @returns {MonthNumber} : month number of the given instance of Time
+     */
+    getMonth = () => super.getMonth();
+    /**
+     * Implementation of Date method getDay
+     * @returns {DayNumber} : month number of the given instance of Time
+     */
+    getDay = () => super.getDay();
+    /**
+     * Gets the current time full month
+     * @returns {string} : full month
+     */
+    getFullMonth = () => Time.getFullMonth(this.getMonth());
+    /**
+     * Gets the current time short month
+     * @returns {string} : short month
+     */
+    getShortMonth = () => Time.getShortMonth(this.getMonth());
+    /**
+     * Gets the current time full month
+     * @returns {string} : full month
+     */
+    getFullDay = () => Time.getFullDay(this.getDay());
+    /**
+     * Gets the current time short month
+     * @returns {string} : short month
+     */
+    getShortDay = () => Time.getShortDay(this.getDay());
+    /**
      * Gets the month and year before the current date
      * @returns {MonthYearObj} : previous month and year couple
      */
@@ -336,7 +366,7 @@ class Time extends Date {
     getNextMonth = () => Time.getDateNextMonth(this);
     /**
      * Returns day of week index shifted, so that monday is 0 (first day of the week)
-     * @returns {DayIndex} : day index
+     * @returns {WeekDayNumber} : day index
      */
     getMonDay = () => this.getDay() === 0 ? 6 : this.getDay() - 1;
     /**
