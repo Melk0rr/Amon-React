@@ -27,9 +27,15 @@ type TimeObj = {
   sec: MinutesSeconds,
 }
 
-type MonthYearObj = {
+type YearMonthObj = {
   year: number,
   month: MonthNumber,
+}
+
+type YearMonthDayObj = {
+  year: number,
+  month: MonthNumber,
+  day: DayNumber
 }
 
 /**
@@ -357,34 +363,34 @@ class Time extends Date {
    * Gets the month and year before the given month and year
    * @param   {MonthNumber} month : month number
    * @param   {number}      year  : year
-   * @returns {MonthYearObj}      : previous month and year couple
+   * @returns {YearMonthObj}      : previous month and year couple
    */
-  public static getPreviousMonth = (month: MonthNumber, year: number): MonthYearObj =>
+  public static getPreviousMonth = (month: MonthNumber, year: number): YearMonthObj =>
     ({ month: (month > 1 ? month - 1 : 12) as MonthNumber, year: month > 1 ? year : year - 1 })
 
  /**
   * Gets the month and year after the given month and year
   * @param   {MonthNumber} month : month number
   * @param   {number}      year  : year
-  * @returns {MonthYearObj}      : next month and year couple
+  * @returns {YearMonthObj}      : next month and year couple
   */
-  public static getNextMonth = (month: MonthNumber, year: number): MonthYearObj =>
+  public static getNextMonth = (month: MonthNumber, year: number): YearMonthObj =>
     ({ month: (month < 12 ? month + 1 : 1) as MonthNumber, year: month < 12 ? year : year + 1 })
 
   /**
    * Gets the month and year before the given date
    * @param   {Date}         date : date object
-   * @returns {MonthYearObj}      : previous month and year couple
+   * @returns {YearMonthObj}      : previous month and year couple
    */
-  public static getDatePreviousMonth = (date: Date|Time): MonthYearObj =>
+  public static getDatePreviousMonth = (date: Date|Time): YearMonthObj =>
     Time.getPreviousMonth(Time.getRealMonth(date), date.getFullYear())
 
    /**
     * Gets the month and year after the given date
     * @param   {Date}         date : date object
-    * @returns {MonthYearObj}      : next month and year couple
+    * @returns {YearMonthObj}      : next month and year couple
     */
-  public static getDateNextMonth = (date: Date|Time): MonthYearObj =>
+  public static getDateNextMonth = (date: Date|Time): YearMonthObj =>
     Time.getNextMonth(Time.getRealMonth(date), date.getFullYear())
 
   /**
@@ -472,6 +478,37 @@ class Time extends Date {
     return res
   }
 
+  /**
+   * Returns calendar dates based on given month and year
+   * @param   {MonthNumber} month : month number
+   * @param   {number} year       : year
+   * @returns {YearMonthDayObj[]} : calendar dates
+   */
+   static getCalendar = (month: MonthNumber, year: number): YearMonthDayObj[] => {
+    const monthDays = Time.getMonthDays(month, year)
+    const firstDay  = Time.getMonthFirstDay(month, year)
+
+    const daysFromPrevMonth = firstDay,
+          daysFromNextMonth = Time.calendarWeeks * 7 - (daysFromPrevMonth + monthDays)
+
+    const { month: prevMonth, year: prevMonthYear } = Time.getPreviousMonth(month, year),
+          { month: nextMonth, year: nextMonthYear } = Time.getNextMonth(month, year)
+
+    const prevMonthDays = Time.getMonthDays(prevMonth, prevMonthYear)
+
+    // Build dates from previous, current and next month
+    const prevMonthDates = [...new Array(daysFromPrevMonth)].map((n, i) =>
+      ({ year: prevMonthYear, month: prevMonth, day: (i + 1 + (prevMonthDays - daysFromPrevMonth)) as DayNumber }))
+
+    const thisMonthDates = [...new Array(monthDays)].map((n, i) =>
+      ({ year, month, day: (i + 1) as DayNumber }))
+
+    const nextMonthDates = [...new Array(daysFromNextMonth)].map((n, i) =>
+      ({ year: nextMonthYear, month: nextMonth, day: (i + 1) as DayNumber }))
+
+    return [ ...prevMonthDates, ...thisMonthDates, ...nextMonthDates ]
+  }
+
 
   // ----------------------------------------------------------------
   // PUBLIC ---------------------------------------------------------
@@ -552,15 +589,15 @@ class Time extends Date {
 
   /**
    * Gets the month and year before the current date
-   * @returns {MonthYearObj} : previous month and year couple
+   * @returns {YearMonthObj} : previous month and year couple
    */
-  public getPreviousMonth = (): MonthYearObj => Time.getDatePreviousMonth(this)
+  public getPreviousMonth = (): YearMonthObj => Time.getDatePreviousMonth(this)
 
   /**
    * Gets the month and year after the current date
-   * @returns {MonthYearObj} : next month and year couple
+   * @returns {YearMonthObj} : next month and year couple
    */
-  public getNextMonth = (): MonthYearObj => Time.getDateNextMonth(this)
+  public getNextMonth = (): YearMonthObj => Time.getDateNextMonth(this)
 
   /**
    * Returns day of week index shifted, so that monday is 0 (first day of the week)
