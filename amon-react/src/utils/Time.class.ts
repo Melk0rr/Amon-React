@@ -1,9 +1,8 @@
-import * as Maths from "./math"
-import * as Strings from "./strings"
+import { limit } from "./math"
+import { zeroPad } from "./strings"
 
 import type { BaseUnit, Range } from "./math"
 
-const { zeroPad } = Strings
 
 type WeekDayNumber = Range<0, 7>
 type MonthNumber = BaseUnit|10|11|12
@@ -93,14 +92,13 @@ class Time extends Date {
   // PRIVATE STATIC -------------------------------------------------
   // ----------------------------------------------------------------
 
-
   /**
    * Handles different argument type passed to constructor
    * @param {TimeObj | Date | string} date : initial date
    * @returns {TimeObj} : time object with year, month, day, hour, min, sec
    */
   private static construct = (date: TimeObj | Date | string): TimeObj => {
-    let res;
+    let res
 
     if (date instanceof Date) {
       res = Time.getDateObj(date)
@@ -113,7 +111,7 @@ class Time extends Date {
       res = Time.today()
     }
 
-    return res;
+    return res
   }
 
   /**
@@ -161,7 +159,7 @@ class Time extends Date {
     const maxDays = Time.getMonthDays(month, year),
           dayNumber = Time.getElementFromDateString<DayNumber>(dateStr, 1, [6, 7, 8])
 
-    return Maths.limit(dayNumber, [0, maxDays]) as DayNumber
+    return limit(dayNumber, [0, maxDays]) as DayNumber
   }
 
   /**
@@ -233,6 +231,14 @@ class Time extends Date {
    * @returns {TimeObj} : today date object
    */
   private static today = (): TimeObj => Time.getDateObj(new Date())
+
+  /**
+   * Generates an array of n number of days
+   * @param   {Type} n : number of values to generate
+   * @returns {DayNumber[]} : array of day number
+   */
+  private static getDayNumberArr = <Type extends number>(n: Type): DayNumber[] =>
+    [...Array(limit(n, [0, 31])).keys()] as DayNumber[]
 
   /**
    * Converts a formated dateString to a dateObj
@@ -331,7 +337,7 @@ class Time extends Date {
    * @returns {string}            : full month name
    */
   public static getFullMonth = (month: MonthNumber): string =>
-    Object.values(Time.months)[Maths.limit(month, [0, 11])]
+    Object.values(Time.months)[month]
 
   /**
    * Gets the short month name based on the given month number
@@ -339,7 +345,7 @@ class Time extends Date {
    * @returns {string}            : short month name
    */
   public static getShortMonth = (month: MonthNumber): string =>
-    Object.keys(Time.months)[Maths.limit(month, [0, 11])]
+    Object.keys(Time.months)[month]
  
   /**
    * Gets the full day name based on the given day number
@@ -347,7 +353,7 @@ class Time extends Date {
    * @returns {string}        : full day name
    */
   public static getFullDay = (day: WeekDayNumber): string =>
-    Object.values(Time.weekDays)[Maths.limit(day, [0, 6])]
+    Object.values(Time.weekDays)[day]
  
   /**
    * Gets the full day name based on the given day number
@@ -355,7 +361,7 @@ class Time extends Date {
    * @returns {string}        : short day name
    */
   public static getShortDay = (day: WeekDayNumber): string =>
-    Object.keys(Time.weekDays)[Maths.limit(day, [0, 6])]
+    Object.keys(Time.weekDays)[day]
 
   /**
    * Gets the month and year before the given month and year
@@ -495,13 +501,13 @@ class Time extends Date {
     const prevMonthDays = Time.getMonthDays(prevMonth, prevMonthYear)
 
     // Build dates from previous, current and next month
-    const prevMonthDates = ([...Array(daysFromPrevMonth).keys()] as DayNumber[]).map((n: DayNumber) =>
+    const prevMonthDates = Time.getDayNumberArr(daysFromPrevMonth).map((n: DayNumber) =>
       ({ year: prevMonthYear, month: prevMonth, day: (n + (prevMonthDays - daysFromPrevMonth)) as DayNumber }))
 
-    const thisMonthDates = ([...Array(monthDays).keys()] as DayNumber[]).map((n: DayNumber) =>
+    const thisMonthDates = Time.getDayNumberArr(monthDays).map((n: DayNumber) =>
       ({ year, month, day: n }))
 
-    const nextMonthDates = ([...Array(daysFromNextMonth).keys()] as DayNumber[]).map((n: DayNumber) =>
+    const nextMonthDates = Time.getDayNumberArr(daysFromNextMonth).map((n: DayNumber) =>
       ({ year: nextMonthYear, month: nextMonth, day: n }))
 
     return [ ...prevMonthDates, ...thisMonthDates, ...nextMonthDates ]

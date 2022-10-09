@@ -1,6 +1,5 @@
-import * as Maths from "./math";
-import * as Strings from "./strings";
-const { zeroPad } = Strings;
+import { limit } from "./math";
+import { zeroPad } from "./strings";
 /**
  * Time class providing various date / time utility functions
  */
@@ -104,7 +103,7 @@ class Time extends Date {
      */
     static getDayFromDateString = (dateStr, year, month) => {
         const maxDays = Time.getMonthDays(month, year), dayNumber = Time.getElementFromDateString(dateStr, 1, [6, 7, 8]);
-        return Maths.limit(dayNumber, [0, maxDays]);
+        return limit(dayNumber, [0, maxDays]);
     };
     /**
      * Parse hours from date string
@@ -155,6 +154,12 @@ class Time extends Date {
      * @returns {TimeObj} : today date object
      */
     static today = () => Time.getDateObj(new Date());
+    /**
+     * Generates an array of n number of days
+     * @param   {Type} n : number of values to generate
+     * @returns {DayNumber[]} : array of day number
+     */
+    static getDayNumberArr = (n) => [...Array(limit(n, [0, 31])).keys()];
     /**
      * Converts a formated dateString to a dateObj
      * @param {string} dateStr
@@ -233,25 +238,25 @@ class Time extends Date {
      * @param   {MonthNumber} month : month number
      * @returns {string}            : full month name
      */
-    static getFullMonth = (month) => Object.values(Time.months)[Maths.limit(month, [0, 11])];
+    static getFullMonth = (month) => Object.values(Time.months)[month];
     /**
      * Gets the short month name based on the given month number
      * @param   {MonthNumber} month : month number
      * @returns {string}            : short month name
      */
-    static getShortMonth = (month) => Object.keys(Time.months)[Maths.limit(month, [0, 11])];
+    static getShortMonth = (month) => Object.keys(Time.months)[month];
     /**
      * Gets the full day name based on the given day number
      * @param   {WeekDayNumber} day : day number
      * @returns {string}        : full day name
      */
-    static getFullDay = (day) => Object.values(Time.weekDays)[Maths.limit(day, [0, 6])];
+    static getFullDay = (day) => Object.values(Time.weekDays)[day];
     /**
      * Gets the full day name based on the given day number
      * @param   {WeekDayNumber} day : day number
      * @returns {string}        : short day name
      */
-    static getShortDay = (day) => Object.keys(Time.weekDays)[Maths.limit(day, [0, 6])];
+    static getShortDay = (day) => Object.keys(Time.weekDays)[day];
     /**
      * Gets the month and year before the given month and year
      * @param   {MonthNumber} month : month number
@@ -362,9 +367,9 @@ class Time extends Date {
         const { month: prevMonth, year: prevMonthYear } = Time.getPreviousMonth(month, year), { month: nextMonth, year: nextMonthYear } = Time.getNextMonth(month, year);
         const prevMonthDays = Time.getMonthDays(prevMonth, prevMonthYear);
         // Build dates from previous, current and next month
-        const prevMonthDates = [...Array(daysFromPrevMonth).keys()].map((n) => ({ year: prevMonthYear, month: prevMonth, day: (n + (prevMonthDays - daysFromPrevMonth)) }));
-        const thisMonthDates = [...Array(monthDays).keys()].map((n) => ({ year, month, day: n }));
-        const nextMonthDates = [...Array(daysFromNextMonth).keys()].map((n) => ({ year: nextMonthYear, month: nextMonth, day: n }));
+        const prevMonthDates = Time.getDayNumberArr(daysFromPrevMonth).map((n) => ({ year: prevMonthYear, month: prevMonth, day: (n + (prevMonthDays - daysFromPrevMonth)) }));
+        const thisMonthDates = Time.getDayNumberArr(monthDays).map((n) => ({ year, month, day: n }));
+        const nextMonthDates = Time.getDayNumberArr(daysFromNextMonth).map((n) => ({ year: nextMonthYear, month: nextMonth, day: n }));
         return [...prevMonthDates, ...thisMonthDates, ...nextMonthDates];
     };
     // ----------------------------------------------------------------
