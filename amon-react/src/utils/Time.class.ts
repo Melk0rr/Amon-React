@@ -1,17 +1,15 @@
 import * as Maths from "./math"
 import * as Strings from "./strings"
-import { BaseObject } from "./types"
+
+import type { BaseUnit, Range } from "./math"
 
 const { zeroPad } = Strings
 
-type WeekDayNumber = 0|1|2|3|4|5|6
-type BaseUnit = 1|2|3|4|5|6|7|8|9
-type Unit = 0|BaseUnit
+type WeekDayNumber = Range<0, 7>
 type MonthNumber = BaseUnit|10|11|12
-type DayNumber = BaseUnit|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31
-type Hour = Unit|10|11|12|13|14|15|16|17|18|19|20|21|22|23
-type MinutesSeconds = Unit|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|25|26|27|28|29|
-                      30|31|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|54|55|56|57|58|59
+type DayNumber = Range<0, 32>
+type Hour = Range<0, 24>
+type MinutesSeconds = Range<0, 60>
 
 type TimeElement = MonthNumber|DayNumber|Hour|MinutesSeconds
 
@@ -497,13 +495,13 @@ class Time extends Date {
     const prevMonthDays = Time.getMonthDays(prevMonth, prevMonthYear)
 
     // Build dates from previous, current and next month
-    const prevMonthDates = [...new Array(daysFromPrevMonth)].map((n: DayNumber) =>
+    const prevMonthDates = ([...Array(daysFromPrevMonth).keys()] as DayNumber[]).map((n: DayNumber) =>
       ({ year: prevMonthYear, month: prevMonth, day: (n + (prevMonthDays - daysFromPrevMonth)) as DayNumber }))
 
-    const thisMonthDates = [...new Array(monthDays)].map((n: DayNumber) =>
+    const thisMonthDates = ([...Array(monthDays).keys()] as DayNumber[]).map((n: DayNumber) =>
       ({ year, month, day: n }))
 
-    const nextMonthDates = [...new Array(daysFromNextMonth)].map((n: DayNumber) =>
+    const nextMonthDates = ([...Array(daysFromNextMonth).keys()] as DayNumber[]).map((n: DayNumber) =>
       ({ year: nextMonthYear, month: nextMonth, day: n }))
 
     return [ ...prevMonthDates, ...thisMonthDates, ...nextMonthDates ]

@@ -362,9 +362,9 @@ class Time extends Date {
         const { month: prevMonth, year: prevMonthYear } = Time.getPreviousMonth(month, year), { month: nextMonth, year: nextMonthYear } = Time.getNextMonth(month, year);
         const prevMonthDays = Time.getMonthDays(prevMonth, prevMonthYear);
         // Build dates from previous, current and next month
-        const prevMonthDates = [...new Array(daysFromPrevMonth)].map((n) => ({ year: prevMonthYear, month: prevMonth, day: (n + (prevMonthDays - daysFromPrevMonth)) }));
-        const thisMonthDates = [...new Array(monthDays)].map((n) => ({ year, month, day: n }));
-        const nextMonthDates = [...new Array(daysFromNextMonth)].map((n) => ({ year: nextMonthYear, month: nextMonth, day: n }));
+        const prevMonthDates = [...Array(daysFromPrevMonth).keys()].map((n) => ({ year: prevMonthYear, month: prevMonth, day: (n + (prevMonthDays - daysFromPrevMonth)) }));
+        const thisMonthDates = [...Array(monthDays).keys()].map((n) => ({ year, month, day: n }));
+        const nextMonthDates = [...Array(daysFromNextMonth).keys()].map((n) => ({ year: nextMonthYear, month: nextMonth, day: n }));
         return [...prevMonthDates, ...thisMonthDates, ...nextMonthDates];
     };
     // ----------------------------------------------------------------
