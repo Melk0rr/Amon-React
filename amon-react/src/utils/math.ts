@@ -1,4 +1,19 @@
 /**
+ * Number related types
+ */
+type PrependNextNum<A extends Array<unknown>> =
+  A['length'] extends infer T ? ((t: T, ...a: A) => void) extends ((...x: infer X) => void) ? X : never : never
+
+type EnumerateInternal<A extends Array<unknown>, N extends number> =
+  { 0: A, 1: EnumerateInternal<PrependNextNum<A>, N> }[N extends A['length'] ? 0 : 1]
+
+type Enumerate<N extends number> = EnumerateInternal<[], N> extends (infer E)[] ? E : never
+type Range<FROM extends number, TO extends number> = Exclude<Enumerate<TO>, Enumerate<FROM>>
+
+type BaseUnit = Range<1, 10>
+type Unit = 0|BaseUnit
+
+/**
  * Returns the round version of a given number based on a round value
  * @param   {number} n : number to round
  * @param   {number} r : round value
@@ -143,4 +158,10 @@ export {
   between,
   arctangent,
   driftCoords
+}
+
+export type {
+  BaseUnit,
+  Unit,
+  Range,
 }

@@ -15,10 +15,7 @@ const filterProperties = (base, keys) => Object.keys(base)
  * Checks if the given object contains all specified keys
  * @param {BaseObject} obj  : object to check
  * @param {string[]}   keys : keys to find in the object
+ * @returns {boolean}       : true if the object contains all the specified keys
  */
-const checkKeys = (obj, keys) => {
-    for (const key of keys)
-        if (!(key in obj))
-            throw new Error("The given object does not contain the key " + key + " !");
-};
+const checkKeys = (obj, keys) => keys.every(k => Object.keys(obj).includes(k));
 export { filterProperties, checkKeys, };

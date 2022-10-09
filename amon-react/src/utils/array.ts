@@ -1,4 +1,4 @@
-import { BaseMap, BaseObject } from "./types"
+import type { BaseMap, BaseObject } from "./types"
 
 /**
  * Returns an array of objects based on a first array and a key filter
