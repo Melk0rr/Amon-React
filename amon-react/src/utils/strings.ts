@@ -29,9 +29,8 @@ const capitalize = (str: string): string => str[0].toUpperCase() + str.slice(1)
  */
 const sbstr = (str: string, sbs: [string, string]): string => {
   const [first, second] = sbs
-  const
-    i1 = str.indexOf(first),
-    i2 = i1 + str.substring(i1).trim().indexOf(second)
+  const i1 = str.indexOf(first),
+        i2 = i1 + str.substring(i1).trim().indexOf(second)
 
   return str.substring(i1 + first.length, i2 + 1).trim()
 }
@@ -49,7 +48,7 @@ const zeroPad = (val: any, len: number): string => `${val}`.padStart(len, '0')
  * @returns {string} : UEID
  */
 const uuid = (): string =>
-  ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3) + 
+  ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3) +
   ("000" + (Math.random() * 46656 | 0).toString(36)).slice(-3)
 
 
