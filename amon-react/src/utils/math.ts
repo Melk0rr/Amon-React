@@ -16,10 +16,10 @@ type Unit = 0|BaseUnit
 /**
  * Returns the round version of a given number based on a round value
  * @param   {number} n : number to round
- * @param   {number} r : round value
+ * @param   {number} p : round precision
  * @returns {number}   : rounded number
  */
-const round = (n: number, r: number): number => Math.round(n * r) / r
+const round = (n: number, p: number): number => Math.round(n * p) / p
 
 /**
  * Returns the percentage based on a given numerator and total
@@ -75,8 +75,10 @@ const angRad = (a: number): number => a * (Math.PI / 180)
  * @param   {number[]} offset : offset coordinates
  * @returns {number[]}        : coordinates
  */
-const cartesXY = (r: number, a: number, offset: [number, number]): [number, number] =>
-  [r * Math.cos(angRad(a)) + offset[0], r * Math.sin(angRad(a)) + offset[1]]
+const cartesXY = (r: number, a: number, offset: [number, number]): [number, number] => {
+  const angleRad = angRad(a)
+  return [r * Math.cos(angleRad) + offset[0], r * Math.sin(angleRad) + offset[1]]
+}
 
 /**
  * Keeps a given value inside the given interval based on a min and max value.
@@ -84,7 +86,10 @@ const cartesXY = (r: number, a: number, offset: [number, number]): [number, numb
  * @param   {number[]} i : interval
  * @returns {number}     : limited value
  */
-const limit = (n: number, [min, max]: [number, number]): number => Math.min(Math.max(n, min), max)
+const limit = (n: number, [min, max]: [number, number]): number => {
+  const nmax = (n < min) ? min : n
+  return (nmax > max) ? max : nmax
+}
 
 /**
  * Checks whether the given number is inside the given interval
@@ -112,12 +117,15 @@ const randomInt = (min: number, max: number): number =>
  * @returns {number}          : resulting theta angle
  */
 const arctangent = ([ox, oy]: [number, number], [tx, ty]: [number, number]): number => {
-  const dx = ox - tx, dy = oy - ty
+  const dx = ox - tx,
+        dy = oy - ty
 
-  let theta: number = Math.atan2(-dy, -dx)
+  let theta = Math.atan2(-dy, -dx)
   theta *= 180 / Math.PI
 
-  if (theta < 0) theta += 360
+  if (theta < 0)
+    theta += 360
+
   return theta
 }
 
@@ -137,8 +145,11 @@ const driftCoords = ([x, y]: [number, number], vbSize: number): [number, number]
 
   let drftX: number;
   if (xAroundMiddle) {
-    if (x < middle) drftX = x - (xMin * .65)
-    else drftX = x + (xMax * .65)
+    if (x < middle)
+      drftX = x - (xMin * .65)
+    else
+      drftX = x + (xMax * .65)
+
   } else drftX = x
 
   return [drftX, limit(y, [vShift, vbSize - vShift])]

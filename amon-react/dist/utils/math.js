@@ -1,10 +1,10 @@
 /**
  * Returns the round version of a given number based on a round value
  * @param   {number} n : number to round
- * @param   {number} r : round value
+ * @param   {number} p : round precision
  * @returns {number}   : rounded number
  */
-const round = (n, r) => Math.round(n * r) / r;
+const round = (n, p) => Math.round(n * p) / p;
 /**
  * Returns the percentage based on a given numerator and total
  * @param   {number} n : numerator
@@ -53,14 +53,20 @@ const angRad = (a) => a * (Math.PI / 180);
  * @param   {number[]} offset : offset coordinates
  * @returns {number[]}        : coordinates
  */
-const cartesXY = (r, a, offset) => [r * Math.cos(angRad(a)) + offset[0], r * Math.sin(angRad(a)) + offset[1]];
+const cartesXY = (r, a, offset) => {
+    const angleRad = angRad(a);
+    return [r * Math.cos(angleRad) + offset[0], r * Math.sin(angleRad) + offset[1]];
+};
 /**
  * Keeps a given value inside the given interval based on a min and max value.
  * @param   {number}   n : number to limit
  * @param   {number[]} i : interval
  * @returns {number}     : limited value
  */
-const limit = (n, [min, max]) => Math.min(Math.max(n, min), max);
+const limit = (n, [min, max]) => {
+    const nmax = (n < min) ? min : n;
+    return (nmax > max) ? max : nmax;
+};
 /**
  * Checks whether the given number is inside the given interval
  * @param   {number}   n   : number to check
