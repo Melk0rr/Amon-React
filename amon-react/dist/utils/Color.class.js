@@ -43,7 +43,12 @@ class Color {
      * Returns color rgb values
      * @returns {RGBAObj} : rgb values
      */
-    getRGB = () => ({ r: this.#r, g: this.#g, b: this.#b, a: this.#a });
+    getRGB = () => ({
+        r: this.#r,
+        g: this.#g,
+        b: this.#b,
+        a: this.#a
+    });
     /**
      * Sets rgb values based on hex
      * @param   {string} hex : hex string

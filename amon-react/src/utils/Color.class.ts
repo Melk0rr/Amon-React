@@ -56,7 +56,13 @@ class Color {
    * Returns color rgb values
    * @returns {RGBAObj} : rgb values
    */
-  public getRGB = (): RGBAObj => ({ r: this.#r, g: this.#g, b: this.#b, a: this.#a })
+  public getRGB = (): RGBAObj =>
+    ({
+      r: this.#r,
+      g: this.#g,
+      b: this.#b,
+      a: this.#a
+    })
 
   /**
    * Sets rgb values based on hex
@@ -145,4 +151,4 @@ class Color {
   static #checkHexString = (str: string): boolean => str.match(Color.#hexCheck) ? true : false
 }
 
-export default Color;
+export default Color

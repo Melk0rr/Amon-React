@@ -8,9 +8,9 @@ import type { BaseMap, BaseObject } from "./types"
  */
 const mapByKey = (arr: BaseObject[], keys: string[]): BaseObject[] => 
   arr.map(obj => {
-      let newObj: BaseObject = {}
-      keys.forEach( k => newObj[k] = obj[k] )
-      return newObj
+    let newObj: BaseObject = {}
+    keys.forEach( k => newObj[k] = obj[k] )
+    return newObj
   })
 
 /**
@@ -55,7 +55,10 @@ const checkEveryFilters = (el: any, fil: Function[]): boolean => fil.every(func 
  * @returns {any[]}          : resulting array
  */
 const applySomeFilters = (arr: any[], fil: Function[], neg: boolean = false): any[] =>
-  arr.filter(el => neg ? !fil.some(func => func(el)) : fil.some(func => func(el)))
+  arr.filter(el =>
+    neg ? !fil.some(func => func(el))
+        : fil.some(func => func(el))
+  )
 
 /**
  * Filters the elements in the given array for which all the provided filters pass.
@@ -65,7 +68,10 @@ const applySomeFilters = (arr: any[], fil: Function[], neg: boolean = false): an
  * @returns {any[]}          : resulting array
  */
 const applyEveryFilters = (arr: any[], fil: Function[], neg: boolean = false): any[] =>
-  arr.filter(el => neg ? !fil.every(func => func(el)) : fil.every(func => func(el)))
+  arr.filter(el =>
+    neg ? !fil.every(func => func(el))
+        : fil.every(func => func(el))
+  )
 
 /**
  * Chunks given array into smaller ones
@@ -74,10 +80,12 @@ const applyEveryFilters = (arr: any[], fil: Function[], neg: boolean = false): a
  * @returns {any[]}       : chunked array
  */
 const chunkArray = (arr: any[], size: number): any[] => {
-  if (size <= 0) return [arr]
+  if (size <= 0)
+    return [arr]
   
   const res = []
-  for (let i = 0; i < arr.length; i += size) res.push(arr.slice(i, i + size))
+  for (let i = 0; i < arr.length; i += size)
+    res.push(arr.slice(i, i + size))
 
   return res
 }

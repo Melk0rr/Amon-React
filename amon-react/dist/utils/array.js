@@ -44,7 +44,8 @@ const checkEveryFilters = (el, fil) => fil.every(func => func(el));
  * @param   {boolean}    neg : should the filters be true or not
  * @returns {any[]}          : resulting array
  */
-const applySomeFilters = (arr, fil, neg = false) => arr.filter(el => neg ? !fil.some(func => func(el)) : fil.some(func => func(el)));
+const applySomeFilters = (arr, fil, neg = false) => arr.filter(el => neg ? !fil.some(func => func(el))
+    : fil.some(func => func(el)));
 /**
  * Filters the elements in the given array for which all the provided filters pass.
  * @param   {any[]}      arr : array to filter
@@ -52,7 +53,8 @@ const applySomeFilters = (arr, fil, neg = false) => arr.filter(el => neg ? !fil.
  * @param   {boolean}    neg : should the filters be true or not
  * @returns {any[]}          : resulting array
  */
-const applyEveryFilters = (arr, fil, neg = false) => arr.filter(el => neg ? !fil.every(func => func(el)) : fil.every(func => func(el)));
+const applyEveryFilters = (arr, fil, neg = false) => arr.filter(el => neg ? !fil.every(func => func(el))
+    : fil.every(func => func(el)));
 /**
  * Chunks given array into smaller ones
  * @param   {any[]}  arr  : array to chunk
