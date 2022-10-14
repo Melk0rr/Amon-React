@@ -1,5 +1,5 @@
 // Script imports
-import * as Maths from "./math"
+import { round } from "./math"
 
 type RGBAObj = {
   r : number,
@@ -100,7 +100,7 @@ class Color {
 
     const [r, g, b, a] = hexMatch.map(x => parseInt(x.length < 2 ? `${x}${x}` : x, 16))
 
-    return { r, g, b, a: Maths.round(a / 255, 10) }
+    return { r, g, b, a: round(a / 255, 10) }
   }
    
   /**
