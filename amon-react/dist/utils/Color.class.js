@@ -1,5 +1,5 @@
 // Script imports
-import * as Maths from "./math";
+import { round } from "./math";
 /**
  * Color class
  */
@@ -78,7 +78,7 @@ class Color {
         if (!hexMatch)
             throw new Error("Invalid hex string !");
         const [r, g, b, a] = hexMatch.map(x => parseInt(x.length < 2 ? `${x}${x}` : x, 16));
-        return { r, g, b, a: Maths.round(a / 255, 10) };
+        return { r, g, b, a: round(a / 255, 10) };
     };
     /**
     * Returns a random hex color string
