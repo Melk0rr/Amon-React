@@ -33,11 +33,15 @@ const Button = ({
   style,
   children = "Button"
 }: ButtonProps): JSX.Element =>
+
   <button
     id={id}
     className={`AmonReact-Button ${className ?? ''}`.trim()}
     onClick={onClick}
-    style={{ ...style, "--button-size": `${size}px` } as ButtonCustomCSS}
+    style={{ 
+      ...style,
+      "--button-size": size ? `${size}px` : 'auto' 
+    } as ButtonCustomCSS}
   >
     {children}
   </button>
