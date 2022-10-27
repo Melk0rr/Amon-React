@@ -3,7 +3,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import './css/Button.css';
 /**
  * Simple component to render an html button
- * @param   {ButtonProps} props : component properties
+ * @param   {CLickableElementProps} props : component properties
  * @returns {JSX.Element} : HTML button
  */
 const Button = ({ id, className, onClick, size, style, children = "Button" }) => _jsx("button", { id: id, className: `AmonReact-Button ${className ?? ''}`.trim(), onClick: onClick, style: {

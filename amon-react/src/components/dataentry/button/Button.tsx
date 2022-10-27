@@ -1,6 +1,6 @@
 // General imports
-import { MouseEventHandler, CSSProperties } from 'react'
-import { BaseObject } from '~/utils/types'
+import { CSSProperties } from 'react'
+import { CLickableElementProps } from '~/utils/types'
 
 // Style import
 import './css/Button.css'
@@ -10,19 +10,9 @@ interface ButtonCustomCSS extends CSSProperties {
   "--button-size": number | string
 }
 
-// Props interface
-interface ButtonProps {
-  id?: string,
-  className?: string,
-  onClick?: MouseEventHandler,
-  size?: number,
-  style?: BaseObject,
-  children?: JSX.Element | string | number,
-}
-
 /**
  * Simple component to render an html button
- * @param   {ButtonProps} props : component properties
+ * @param   {CLickableElementProps} props : component properties
  * @returns {JSX.Element} : HTML button
  */
 const Button = ({
@@ -32,7 +22,7 @@ const Button = ({
   size,
   style,
   children = "Button"
-}: ButtonProps): JSX.Element =>
+}: CLickableElementProps): JSX.Element =>
 
   <button
     id={id}
