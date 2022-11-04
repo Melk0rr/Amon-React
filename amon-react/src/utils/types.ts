@@ -17,18 +17,12 @@ type BaseObject = {
 interface HTMLElementProps {
   id?: string,
   className?: string,
-  size?: number,
   style?: BaseObject,
   children?:JSX.Element | string | number,
-}
-
-interface CLickableElementProps extends HTMLElementProps {
-  onClick?: MouseEventHandler,
 }
 
 export type {
   BaseMap,
   BaseObject,
   HTMLElementProps,
-  CLickableElementProps,
 }
