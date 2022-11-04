@@ -1,6 +1,6 @@
 // General imports
-import { CSSProperties } from 'react'
-import { CLickableElementProps } from '~/utils/types'
+import { CSSProperties, MouseEventHandler } from 'react'
+import { HTMLElementProps } from '~/utils/types'
 
 // Style import
 import './css/Button.css'
@@ -8,6 +8,12 @@ import './css/Button.css'
 // Add custom properties to the CSSProperties interface for type checking
 interface ButtonCustomCSS extends CSSProperties {
   "--button-size": number | string
+}
+
+// Type check for Icon properties
+interface ButtonProps extends HTMLElementProps {
+  size?: number,
+  onClick?: MouseEventHandler
 }
 
 /**
@@ -22,7 +28,7 @@ const Button = ({
   size,
   style,
   children = "Button"
-}: CLickableElementProps): JSX.Element =>
+}: ButtonProps): JSX.Element =>
 
   <button
     id={id}

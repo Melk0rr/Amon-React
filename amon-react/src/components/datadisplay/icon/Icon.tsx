@@ -1,15 +1,18 @@
 // General imports
-import { CLickableElementProps } from '~/utils/types'
+import { MouseEventHandler } from 'react'
+import { HTMLElementProps } from '~/utils/types'
 import icons from './icons'
 
 // Style import
 import './css/Icon.css'
 
 // Type check for Icon properties
-interface IconProps extends CLickableElementProps {
+interface IconProps extends HTMLElementProps {
   icon: string,
   color?: string,
-  viewBox?: string
+  viewBox?: string,
+  size?: number,
+  onClick?: MouseEventHandler
 }
 
 /**
