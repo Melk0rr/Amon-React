@@ -1,6 +1,6 @@
 // General imports
-import { MouseEventHandler } from 'react'
-import { HTMLElementProps } from '~/utils/types'
+import { MouseEventHandler, FC } from 'react'
+import { HTMLElementProps } from 'utils/types'
 import icons from './icons'
 
 // Style import
@@ -20,7 +20,7 @@ interface IconProps extends HTMLElementProps {
  * @param   {IconProps} props : component properties
  * @returns {JSX.Element} : HTML button
  */
-const Icon = ({
+const Icon: FC<IconProps> = ({
   icon,
   color = "#000000",
   size = 20,
@@ -29,7 +29,7 @@ const Icon = ({
   onClick,
   id,
   className
-}: IconProps): JSX.Element =>
+}) =>
   <svg
     id={id}
     className={`AmonReact-Icon ${className ?? ''}`.trim()}
