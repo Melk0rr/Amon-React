@@ -1,9 +1,7 @@
-import { MouseEventHandler } from 'react'
-
 /**
  * Basic Map interface for Type check
  */
- type BaseMap = {
+type BaseMap = {
   [key: string | number]: any
 }
 
@@ -18,7 +16,7 @@ interface HTMLElementProps {
   id?: string,
   className?: string,
   style?: BaseObject,
-  children?:JSX.Element | string | number,
+  children?: any,
 }
 
 export type {
