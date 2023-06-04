@@ -1,6 +1,7 @@
 // General imports
-import { CSSProperties, MouseEventHandler } from 'react'
-import { HTMLElementProps } from '~/utils/types'
+import { FC, CSSProperties, MouseEventHandler } from 'react'
+import { HTMLElementProps } from 'utils/types'
+import { Icon } from 'components'
 
 // Style import
 import './css/Button.css'
@@ -14,6 +15,8 @@ interface ButtonCustomCSS extends CSSProperties {
 interface ButtonProps extends HTMLElementProps {
   size?: number,
   onClick?: MouseEventHandler
+  shape?: "round" | "default"
+  icon?: string
 }
 
 /**
@@ -21,25 +24,29 @@ interface ButtonProps extends HTMLElementProps {
  * @param   {CLickableElementProps} props : component properties
  * @returns {JSX.Element} : HTML button
  */
-const Button = ({
+const Button: FC<ButtonProps> = ({
   id,
   className,
   onClick,
+  shape = "default",
+  icon,
   size,
   style,
   children = "Button"
-}: ButtonProps): JSX.Element =>
+}) =>
 
   <button
     id={id}
     className={`AmonReact-Button ${className ?? ''}`.trim()}
     onClick={onClick}
-    style={{ 
+    style={{
       ...style,
-      "--button-size": size ? `${size}px` : 'auto' 
+      "--button-size": size ? `${size}px` : 'auto',
+      "--button-shape-radius": (shape === "round") ? "50px" : "5px"
     } as ButtonCustomCSS}
   >
-    {children}
+    {icon && <Icon icon={icon} className="AmonReact-Button-icon" />}
+    <span>{children}</span>
   </button>
 
 export default Button
