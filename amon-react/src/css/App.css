@@ -1,0 +1,78 @@
+* {
+  font-family: var(--font-family);
+  font-weight: var(--font-weight);
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-size-normal);
+}
+
+*:focus,
+*:focus-visible {
+  outline: none;
+}
+
+html,
+body,
+#root,
+.App {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.App {
+  text-align: center;
+  color: var(--font-color);
+  display: flex;
+  flex-flow: column;
+}
+
+.AmonReact-logo-min {
+  width: 70px;
+  top: 20px;
+}
+
+b {
+  font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+h1,
+h1 * {
+  font-size: var(--font-size-main);
+}
+
+h2 {
+  font-size: var(--font-size-title);
+}
+
+h2.section-title {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.component-list {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.component-list>* {
+  flex: .25;
+}
+
+.default-row {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  margin-bottom: 10px;
+}
