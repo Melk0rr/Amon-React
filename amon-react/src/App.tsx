@@ -1,30 +1,42 @@
 import React from 'react'
-import './App.css'
 
-import { between } from './utils/math'
-import { sortMap } from './utils/array'
+// CSS imports
+import './css/theme.css'
+import './css/App.css'
 
+// Local resources imports
+import logo from './img/amon-react.svg'
 
-const num: number = 5,
-  min: number = 0,
-  max: number = 10
+// Component imports
+import { Button, Switch, Slider, Card } from 'components'
 
-const ages = new Map<string, number>([
-  ['roy', 3],
-  ['rick', 35],
-  ['rachael', 33],
-  ['tetsuo', 17]
-])
-console.log(ages)
-
-const sortedAges = sortMap(ages, (a: any, b: any) => a[1] - b[1])
-console.log(sortedAges)
-
-const App = () => (
+/**
+ * Main component rendering the AmonReact application
+ * @returns 
+ */
+const App: React.FC = () => (
   <div className="App">
-    <p>Test Typescript tuples:</p>
-    <p>{num} is between {min} and {max} : {`${between(num, [min, max])}`}</p>
+    <h1 className="AmonReact-main-title">Amon<img src={logo} className="AmonReact-logo-min" alt="R" />eact</h1>
 
+    <section className="component-demo">
+      <h2 className="section-title">Components list</h2>
+      <div className="component-list">
+        <Card title="Button" hoverable>
+          <p><Button>Default button</Button></p>
+          <p><Button shape="round">Round button</Button></p>
+          <p><Button shape="round" icon="search">Icon button</Button></p>
+        </Card>
+
+        <Card title="Switch" hoverable>
+          <p><Switch /></p>
+          <p><Switch size="small" /></p>
+        </Card>
+
+        <Card title="Slider" hoverable>
+          <Slider min={0} max={100} />
+        </Card>
+      </div>
+    </section>
   </div>
 )
 
