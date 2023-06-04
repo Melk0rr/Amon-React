@@ -1,4 +1,5 @@
 .AmonReact-Switch {
+  position: relative;
   display: inline-block;
   height: 25px;
   line-height: 25px;
@@ -6,12 +7,16 @@
   border: 0;
   border-radius: 100px;
   transition: all .2s ease;
-  background-color: #00000040;
+  background-color: var(--switch-background-color);
   cursor: pointer;
 }
 
+.AmonReact-Switch:hover {
+  background-color: var(--switch-hover-color);
+}
+
 .AmonReact-Switch:focus {
-  box-shadow: 0 0 0 2px #0000001a;
+  box-shadow: 0 0 0 2px var(--switch-background-color);
 }
 
 .AmonReact-Switch.AmonReact-Switch-small {
@@ -37,9 +42,13 @@
 }
 
 .AmonReact-Switch.AmonReact-Switch-checked {
-  background-color: var(--checked-color);
+  background-color: var(--switch-checked-color);
 }
 
 .AmonReact-Switch.AmonReact-Switch-checked .AmonReact-Switch-handle {
-  left: calc(100% - 21px - 2px);
+  inset-inline-start: calc(100% - 21px - 2px);
+}
+
+.AmonReact-Switch-small.AmonReact-Switch-checked .AmonReact-Switch-handle {
+  inset-inline-start: calc(100% - 12px - 2px);
 }

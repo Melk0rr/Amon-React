@@ -1,6 +1,6 @@
 // General imports
-import { useState } from 'react'
-import { HTMLElementProps } from '~/utils/types'
+import { useState, FC } from 'react'
+import { HTMLElementProps } from 'utils/types'
 
 // Style import
 import './css/Switch.css'
@@ -10,23 +10,23 @@ interface SwitchProps extends HTMLElementProps {
   size?: "default" | "small",
   checked?: boolean,
   disabled?: boolean,
-  onClick?: Function,
+  onClick?: (check: boolean) => void,
 }
 
 /**
  * Simple component to display a switch input
- * @param   {SwitchProps} props : component properties 
- * @returns {JSX.Element} : HTML button
+ * @param   {SwitchProps} props : component properties
+ * @returns {React.FC} : HTML switch component
  */
-const Switch = ({
+const Switch: FC<SwitchProps> = ({
   size = "default",
   checked = false,
   disabled = false,
   onClick,
   id,
   className
-}: SwitchProps): JSX.Element => {
-  
+}) => {
+
   // React hook
   const [check, setCheck] = useState(checked)
 
@@ -40,15 +40,17 @@ const Switch = ({
       onClick(check)
   }
 
+  // Forging class name based on checked state and disabled property
   const disabledProp = disabled ? { disabled: true } : {}
   const checkedClassName = check ? "AmonReact-Switch-checked" : "",
-        disabledClassName = disabled ? "AmonReact-Switch-disabled" : "",
-        forgedClassName = "AmonReact-Switch AmonReact-Switch-" + size + " " + checkedClassName + " " + disabledClassName
+    disabledClassName = disabled ? "AmonReact-Switch-disabled" : "";
+
+  const forgedClassName = "AmonReact-Switch AmonReact-Switch-" + size + " " + checkedClassName + " " + disabledClassName
 
   return (
     <button
       id={id}
-      className={(forgedClassName + (className ?? "")).trim()}
+      className={(forgedClassName + " " + (className ?? "")).trim()}
       onClick={onCheck}
       {...disabledProp}
     >
