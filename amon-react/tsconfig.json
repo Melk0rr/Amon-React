@@ -22,12 +22,15 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "~/*": [
-        "*"
+      "utils/*": [
+        "./utils/*"
+      ],
+      "components/*": [
+        "./components/*"
       ]
     }
   },
   "include": [
-    "src/**/*"
+    "**/*"
   ]
 }
