@@ -1,0 +1,37 @@
+.AmonReact-Card,
+.AmonReact-Card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.AmonReact-Card {
+  border: 1px solid #00000040;
+  border-radius: 5px;
+  margin: 5px 15px;
+  transition: .2s linear all;
+}
+
+.AmonReact-Card.AmonReact-Card-hoverable:hover {
+  cursor: pointer;
+  box-shadow: 0 0 10px #00000040;
+}
+
+.AmonReact-Card-head {
+  padding: 15px 10px;
+  border-bottom: 1px solid #00000040;
+}
+
+.AmonReact-Card-title {
+  text-align: left;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.AmonReact-Card-content {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 10px
+}
