@@ -1,15 +1,10 @@
 // General imports
-import { FC, CSSProperties, MouseEventHandler } from 'react'
+import { FC, MouseEventHandler } from 'react'
 import { HTMLElementProps } from 'utils/types'
 import { Icon } from 'components'
 
 // Style import
 import './css/Button.css'
-
-// Add custom properties to the CSSProperties interface for type checking
-interface ButtonCustomCSS extends CSSProperties {
-  "--button-size": number | string
-}
 
 // Type check for Icon properties
 interface ButtonProps extends HTMLElementProps {
@@ -20,9 +15,9 @@ interface ButtonProps extends HTMLElementProps {
 }
 
 /**
- * Simple component to render an html button
- * @param   {CLickableElementProps} props : component properties
- * @returns {JSX.Element} : HTML button
+ * Button component rendering a simple button
+ * @param   {ButtonProps} props : component properties
+ * @returns {FC} : HTML button
  */
 const Button: FC<ButtonProps> = ({
   id,
@@ -41,9 +36,9 @@ const Button: FC<ButtonProps> = ({
     onClick={onClick}
     style={{
       ...style,
-      "--button-size": size ? `${size}px` : 'auto',
-      "--button-shape-radius": (shape === "round") ? "50px" : "5px"
-    } as ButtonCustomCSS}
+      width: size ?? "auto",
+      borderRadius: (shape === "round") ? "50px" : "5px"
+    }}
   >
     {icon && <Icon icon={icon} className="AmonReact-Button-icon" />}
     <span>{children}</span>
