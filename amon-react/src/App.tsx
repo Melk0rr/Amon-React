@@ -8,7 +8,8 @@ import './css/App.css'
 import logo from './img/amon-react.svg'
 
 // Component imports
-import { Button, Switch, Slider, Card } from 'components'
+import { Button, Switch, Slider, Card, Flex } from 'components'
+const { Row, Col } = Flex
 
 /**
  * Main component rendering the AmonReact application
@@ -20,22 +21,28 @@ const App: React.FC = () => (
 
     <section className="component-demo">
       <h2 className="section-title">Components list</h2>
-      <div className="component-list">
-        <Card title="Button" hoverable>
-          <p><Button>Default button</Button></p>
-          <p><Button shape="round">Round button</Button></p>
-          <p><Button shape="round" icon="search">Icon button</Button></p>
-        </Card>
+      <Row className="component-list" wrap justify="start" align="stretch">
+        <Col className="component-col" justify="stretch">
+          <Card title="Button" className="component-display" hoverable>
+            <p><Button>Default button</Button></p>
+            <p><Button shape="round">Round button</Button></p>
+            <p><Button shape="round" icon="search">Icon button</Button></p>
+          </Card>
+        </Col>
 
-        <Card title="Switch" hoverable>
-          <p><Switch /></p>
-          <p><Switch size="small" /></p>
-        </Card>
+        <Col className="component-col" justify="stretch">
+          <Card title="Switch" className="component-display" hoverable>
+            <p><Switch /></p>
+            <p><Switch size="small" /></p>
+          </Card>
+        </Col>
 
-        <Card title="Slider" hoverable>
-          <Slider min={0} max={100} />
-        </Card>
-      </div>
+        <Col className="component-col" justify="stretch">
+          <Card title="Slider" className="component-display" hoverable>
+            <Slider min={0} max={100} />
+          </Card>
+        </Col>
+      </Row>
     </section>
   </div>
 )

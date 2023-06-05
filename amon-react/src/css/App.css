@@ -37,6 +37,10 @@ b {
   font-weight: bold;
 }
 
+p {
+  text-align: left;
+}
+
 h1,
 h2,
 h3,
@@ -60,14 +64,12 @@ h2.section-title {
   padding-left: 20px;
 }
 
-.component-list {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
+.component-list>* {
+  width: 25%;
 }
 
-.component-list>* {
-  flex: .25;
+.component-display {
+  width: 100%;
 }
 
 .default-row {
