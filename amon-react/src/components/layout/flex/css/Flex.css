@@ -1,0 +1,77 @@
+.AmonReact-Row,
+.AmonReact-Col {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.AmonReact-Row {
+  width: 100%;
+  flex-direction: row;
+}
+
+.AmonReact-Col {
+  flex-direction: column;
+  padding: 0 10px;
+}
+
+.AmonReact-Row-reverse {
+  flex-direction: row-reverse;
+}
+
+.AmonReact-Col-reverse {
+  flex-direction: column-reverse;
+}
+
+.AmonReact-Flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+/* Justify classes */
+.AmonReact-Flex-start-justified {
+  justify-content: start;
+}
+
+.AmonReact-Flex-end-justified {
+  justify-content: end;
+}
+
+.AmonReact-Flex-center-justified {
+  justify-content: center;
+}
+
+.AmonReact-Col.AmonReact-Flex-stretch-justified>* {
+  height: 100%;
+}
+
+.AmonReact-Flex-stretch-justified {
+  justify-content: stretch;
+}
+
+.AmonReact-Flex-space-between-justified {
+  justify-content: space-between;
+}
+
+.AmonReact-Flex-space-around-justified {
+  justify-content: space-around;
+}
+
+.AmonReact-Flex-space-evenly-justified {
+  justify-content: space-evenly;
+}
+
+/* Align classes */
+.AmonReact-Flex-start-aligned {
+  align-items: start;
+}
+
+.AmonReact-Flex-end-aligned {
+  align-items: end;
+}
+
+.AmonReact-Flex-center-aligned {
+  align-items: center;
+}
+
+.AmonReact-Flex-stretch-aligned {
+  align-items: stretch;
+}
