@@ -8,3 +8,7 @@ export {
   Card,
   Icon
 } from './datadisplay';
+
+export {
+  Flex
+} from './layout'
