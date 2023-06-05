@@ -42,8 +42,8 @@ const Card: FC<CardProps> = ({
   return (
     <div
       id={id}
-      style={{ ...style, width: size ?? "auto" }}
-      className={(forgedClassName + (className ?? "")).trim()}
+      style={{ ...style, width: size ?? "" }}
+      className={(forgedClassName + " " + (className ?? "")).trim()}
     >
       {cardHead}
       <div className="AmonReact-Card-content">
