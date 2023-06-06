@@ -48,6 +48,7 @@
 }
 
 .AmonReact-Slider:hover .AmonReact-Slider-handle,
+.AmonReact-Slider-handle-dragging,
 .AmonReact-Slider:hover .AmonReact-Slider-track {
   background-color: var(--slider-handle-hover-color);
 }
@@ -64,13 +65,14 @@
 }
 
 .AmonReact-Slider-handle:hover,
-.AmonReact-Slider-handle:focus {
+.AmonReact-Slider-handle:focus,
+.AmonReact-Slider-handle-dragging {
   border: 2px solid var(--slider-handle-hover-color);
 }
 
 .AmonReact-Slider-value {
   position: absolute;
-  transform: translateY(100%);
+  transform: translateY(80%);
   left: 0;
   z-index: 5000;
   pointer-events: none;
