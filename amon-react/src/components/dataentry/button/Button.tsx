@@ -32,12 +32,15 @@ const Button: FC<ButtonProps> = ({
 
   <button
     id={id}
-    className={`AmonReact-Button ${className ?? ''}`.trim()}
+    className={
+      ("AmonReact-Button " +
+        (shape === "round" ? "AmonReact-Button-round " : "") +
+        className ?? "").trim()
+    }
     onClick={onClick}
     style={{
       ...style,
       width: size ?? "auto",
-      borderRadius: (shape === "round") ? "50px" : "5px"
     }}
   >
     {icon && <Icon icon={icon} className="AmonReact-Button-icon" />}
