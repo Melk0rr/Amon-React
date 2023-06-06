@@ -40,6 +40,7 @@ const App: React.FC = () => (
         <Col className="component-col" justify="stretch">
           <Card title="Slider" className="component-display" hoverable>
             <Slider min={0} max={100} />
+            <Slider range min={0} max={100} />
           </Card>
         </Col>
       </Row>
