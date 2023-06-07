@@ -6,6 +6,7 @@
   justify-content: center;
   margin: 10px 5px;
   padding: 0;
+  touch-action: none;
 }
 
 .AmonReact-Slider-horizontal {
@@ -13,22 +14,44 @@
   padding-block: 5px;
 }
 
-.AmonReact-Slider-rail,
-.AmonReact-Slider-step {
-  width: 100%;
+.AmonReact-Slider-vertical {
+  width: 12px;
 }
 
 .AmonReact-Slider-rail,
 .AmonReact-Slider-track,
-.AmonReact-Slider-step {
-  height: 5px;
+.AmonReact-Slider-step,
+.AmonReact-Slider-value {
   position: absolute;
+}
+
+.AmonReact-Slider-horizontal .AmonReact-Slider-rail,
+.AmonReact-Slider-horizontal .AmonReact-Slider-step {
+  width: 100%;
+}
+
+.AmonReact-Slider-vertical,
+.AmonReact-Slider-vertical .AmonReact-Slider-rail,
+.AmonReact-Slider-vertical .AmonReact-Slider-step {
+  height: 100%;
+}
+
+.AmonReact-Slider-horizontal .AmonReact-Slider-rail,
+.AmonReact-Slider-horizontal .AmonReact-Slider-track,
+.AmonReact-Slider-horizontal .AmonReact-Slider-step {
+  height: 5px;
+}
+
+.AmonReact-Slider-vertical .AmonReact-Slider-rail,
+.AmonReact-Slider-vertical .AmonReact-Slider-track,
+.AmonReact-Slider-vertical .AmonReact-Slider-step {
+  width: 5px;
 }
 
 .AmonReact-Slider-rail {
   background: var(--slider-background-color);
   opacity: 0.7;
-  transition: opacity .2s;
+  transition: linear opacity .2s;
 }
 
 .AmonReact-Slider:hover .AmonReact-Slider-rail {
@@ -43,39 +66,61 @@
 
 .AmonReact-Slider-handle,
 .AmonReact-Slider-track {
-  background-color: var(--slider-handle-color);
-  transition: background-color .2s
+  background-color: var(--slider-handle-outer-color);
+  transition: linear background-color .2s;
+}
+
+
+.AmonReact-Slider:hover .AmonReact-Slider-track {
+  background-color: var(--slider-handle-outer-hover-color);
 }
 
 .AmonReact-Slider:hover .AmonReact-Slider-handle,
-.AmonReact-Slider-handle-dragging,
-.AmonReact-Slider:hover .AmonReact-Slider-track {
-  background-color: var(--slider-handle-hover-color);
+.AmonReact-Slider-handle-dragging {
+  box-shadow: 0 0 0 2px var(--slider-handle-outer-hover-color);
+}
+
+.AmonReact-Slider-handle,
+.AmonReact-Slider-step-dot {
+  background-color: var(--slider-handle-inner-color);
+  position: absolute;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--slider-handle-outer-color);
+  box-sizing: border-box;
+  border-radius: 50%;
+  transition: box-shadow .2s;
 }
 
 .AmonReact-Slider-handle {
-  position: absolute;
-  width: 15px;
-  height: 15px;
-  transform: translateX(-50%);
-  border-radius: 10px;
+  width: 14px;
+  height: 14px;
   cursor: pointer;
-  outline: none;
-  transition: border .1s
+  transform: translateX(-50%);
+  z-index: 5000;
+}
+
+.AmonReact-Slider-vertical .AmonReact-Slider-handle {
+  inset-inline-start: 3px;
 }
 
 .AmonReact-Slider-handle:hover,
 .AmonReact-Slider-handle:focus,
 .AmonReact-Slider-handle-dragging {
-  border: 2px solid var(--slider-handle-hover-color);
+  box-shadow: 0 0 0 4px var(--slider-handle-outer-hover-color) !important;
 }
 
 .AmonReact-Slider-value {
-  position: absolute;
-  transform: translateY(80%);
+  transform: translateY(-120%);
+  top: 0;
   left: 0;
-  z-index: 5000;
   pointer-events: none;
   color: var(--font-color);
   font-weight: 600;
+  user-select: none;
+}
+
+.AmonReact-Slider-vertical .AmonReact-Slider-value {
+  inset-inline-start: -4px;
+  inset-block-start: -4px;
+  transform: translateX(-120%);
 }

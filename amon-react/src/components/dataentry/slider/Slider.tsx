@@ -1,10 +1,20 @@
 // General imports
-import { useState, useRef, useEffect, FC, RefObject } from 'react'
-import { HTMLElementProps } from 'utils/types'
-import { round, percent } from 'utils/math'
+import { useState, useEffect, useRef, FC } from 'react'
+import { HTMLElementProps, BaseObject } from 'utils/types'
+import { percent } from 'utils/math'
+
+import SliderHandle from './SliderHandle'
 
 // Style imports
 import './css/Slider.css'
+
+type SliderHandleSort = {
+  [key: string]: number
+}
+
+type SliderMarks = {
+  [key: number]: string | BaseObject
+}
 
 // Prop types for Slider component
 interface SliderProps extends HTMLElementProps {
@@ -17,20 +27,7 @@ interface SliderProps extends HTMLElementProps {
   vertical?: boolean,
   showTrack?: boolean,
   unit?: string,
-  onChange?: (target: number) => void
-}
-
-interface SliderHandleProps extends HTMLElementProps {
-  defaultValue?: number,
-  min: number,
-  max: number,
-  step: number,
-  sliderRef: RefObject<HTMLDivElement>
-  onChange?: (target: number) => void
-}
-
-type SliderHandleSort = {
-  [key: string]: number
+  onChange?: (v: number | [number, number]) => void
 }
 
 const posToPercentage = (value: number, min: number, max: number): number => percent((value - min), (max - min))
@@ -55,33 +52,43 @@ const Slider: FC<SliderProps> = ({
   className
 }) => {
 
-  const initHandleValue = () => {
-    let initValue = min
+  /**
+   * Initialize the values of the slider handles based on the provided default value
+   * @returns {number[]} : initialized values
+   */
+  const initHandleValue = (): number[] => {
+    let initValue = [min]
     if (defaultValue) {
+      if (Array.isArray(defaultValue)) {
+        initValue = defaultValue
 
+      } else {
+        initValue = [defaultValue]
+      }
     }
+
+    return initValue
   }
 
   const baseClassName = "AmonReact-Slider"
   const slide = useRef<HTMLDivElement>(null)
-  const [handle1Value, setHandle1Value] = useState(min)
-  const [handle2Value, setHandle2Value] = useState(min)
+  const [handle1Value, setHandle1Value] = useState(initHandleValue()[0])
+  const [handle2Value, setHandle2Value] = useState(initHandleValue()[1] ?? min)
+
   /**
-   * Callback function updating Slider handle values based on its value
-   * @param {number} value : Slider value
-   * @param {0 | 1} handleIndex : index of the handle
+   * Function to run when the handle values change
    */
-  const onHandleValueChange = (value: number, handleIndex: 0 | 1): void => {
+  useEffect(() => {
     if (onChange)
-      onChange(value)
+      onChange(range ? [handle1Value, handle2Value] : handle1Value)
 
-    if (handleIndex === 0) {
-      setHandle1Value(value)
-    } else {
-      setHandle2Value(value)
-    }
-  }
+  }, [handle1Value, handle2Value])
 
+  /**
+   * Returns an object with 3 keys : max and min based on the current handle values
+   * Used to determine which handle value is greater than the other
+   * @returns {SliderHandleSort} : Slider handle values sorted as "max" and "min"
+   */
   const getHandleValueSorted = (): SliderHandleSort => {
     let sort: SliderHandleSort = {
       max: handle1Value
@@ -99,27 +106,32 @@ const Slider: FC<SliderProps> = ({
     return sort
   }
 
-  const getTrackWidth = (): number => {
-    let trackWidth = 0
+  /**
+   * Returns the track width based on the current handle values
+   * @returns {number} : track width
+   */
+  const getTrackSize = (): number => {
+    let trackSize = 0
     if (showTrack) {
-      if (range) {
-        const sort = getHandleValueSorted()
-        trackWidth = posToPercentage(sort.max, min, max) - posToPercentage(sort.min, min, max)
-      } else {
-        trackWidth = posToPercentage(handle1Value, min, max)
-      }
+      const sort = getHandleValueSorted()
+      trackSize = posToPercentage(sort.max, min, max)
+
+      if (range)
+        trackSize -= posToPercentage(sort.min, min, max)
     }
 
 
-    return trackWidth
+    return trackSize
   }
 
-  const handleBaseProps = { min, max, step, sliderRef: slide }
+  // Handle list
+  const handleBaseProps = { min, max, step, vertical, sliderRef: slide }
   let handles = [
     <SliderHandle
+      key="handle-1"
       defaultValue={handle1Value}
       className="AmonReact-Slider-handle-1"
-      onChange={pos => onHandleValueChange(pos, 0)}
+      onChange={pos => setHandle1Value(pos)}
       {...handleBaseProps}
     />
   ]
@@ -127,113 +139,28 @@ const Slider: FC<SliderProps> = ({
   if (range) {
     handles.push(
       <SliderHandle
+        key="handle-2"
         defaultValue={handle2Value}
         className="AmonReact-Slider-handle-2"
-        onChange={pos => onHandleValueChange(pos, 1)}
+        onChange={pos => setHandle2Value(pos)}
         {...handleBaseProps}
       />
     )
   }
 
-  let forgedClassName = baseClassName + " " + baseClassName + "-" + (vertical ? "vertical" : "horizontal")
-  const trackCSSLeft = range ? { left: getHandleValueSorted().min + "%" } : {}
+  let forgedClassName = `${baseClassName} ${baseClassName}-` + (vertical ? "vertical" : "horizontal")
   const trackCSSProps = {
-    width: getTrackWidth() + "%",
-    ...trackCSSLeft
+    [vertical ? "height" : "width"]: getTrackSize() + "%",
+    [vertical ? "bottom" : "left"]: (range ? getHandleValueSorted().min : 0) + "%"
   }
 
   return (
-    <div id={id} className={(forgedClassName + " " + (className ?? '')).trim()} style={{ width: size }} ref={slide}>
+    <div id={id} className={(forgedClassName + " " + (className ?? '')).trim()} style={{ [vertical ? "height" : "width"]: size }} ref={slide}>
       <div className="AmonReact-Slider-rail" ></div>
       <div className="AmonReact-Slider-track" style={trackCSSProps}></div>
+      <div className="AmonReact-Slider-mark"></div>
       <div className="AmonReact-Slider-step"></div>
       {handles}
-      {/* <input onChange={e => handleSlideChange(e)} type="range" {...baseProps} ></input> */}
-    </div>
-  )
-}
-
-/**
- * SliderHandle component rendering and describing the behavior of a Slider component handle
- * @param {SliderHandleProps} props : SliderHandle component properties
- * @returns {FC} : SliderHandle component
- */
-const SliderHandle: FC<SliderHandleProps> = ({
-  defaultValue,
-  min,
-  max,
-  step,
-  sliderRef,
-  onChange,
-  className
-}) => {
-
-  // State 
-  const [dragged, setDragged] = useState(false)
-  const [handleValue, setHandleValue] = useState(defaultValue ?? min)
-  const [handleValuePercentage, setHandleValuePercentage] = useState(
-    posToPercentage((defaultValue ?? min), min, max)
-  )
-
-  const baseClassName = "AmonReact-Slider-handle"
-
-  /**
-   * Function to run when the handle is dragged
-   */
-  useEffect(() => {
-    const rect = sliderRef.current?.getBoundingClientRect()
-
-    if (rect) {
-      const minPos = 0,
-        maxPos = rect.width
-
-      let absolutePos = handleValuePercentage
-      window.onmousemove = (eMove: MouseEvent): void => {
-        const position = eMove.clientX - rect.x
-
-        if (dragged) {
-          window.onmouseup = (): void => {
-            setDragged(false)
-          }
-
-          if (position < minPos) {
-            absolutePos = min
-          } else if (position > maxPos) {
-            absolutePos = max
-          } else {
-            absolutePos = (position / maxPos) * (max - min) + min
-          }
-
-          if (
-            absolutePos <= handleValuePercentage + step &&
-            absolutePos >= handleValuePercentage - step
-          ) {
-            absolutePos = handleValuePercentage
-          }
-
-          absolutePos = round(absolutePos, (1 / step))
-
-          if (onChange)
-            onChange(absolutePos)
-
-          setHandleValue(absolutePos)
-        }
-      }
-    }
-  }, [dragged])
-
-  /**
-   * Function to run when the handle value changes
-   */
-  useEffect(() => {
-    setHandleValuePercentage(posToPercentage(handleValue, min, max))
-  }, [handleValue])
-
-  let forgedClassName = baseClassName + " " + (dragged ? (baseClassName + "-dragging") : "") + " " + (className ?? "")
-
-  return (
-    <div className={forgedClassName.trim()} onMouseDown={() => setDragged(true)} style={{ left: handleValuePercentage + "%" }}>
-      <span className="AmonReact-Slider-value">{handleValue}</span>
     </div>
   )
 }
