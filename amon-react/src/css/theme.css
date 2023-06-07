@@ -79,8 +79,9 @@
   --switch-handle-color: #eed570;
 
   /* Slider theme */
-  --slider-handle-color: #975646;
-  --slider-handle-hover-color: #c13c1b;
+  --slider-handle-inner-color: #eed570;
+  --slider-handle-outer-color: #975646;
+  --slider-handle-outer-hover-color: #c13c1b;
   --slider-background-color: #00000040;
 
   /* Spin theme */

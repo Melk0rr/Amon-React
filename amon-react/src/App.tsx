@@ -39,8 +39,16 @@ const App: React.FC = () => (
 
         <Col className="component-col" justify="stretch">
           <Card title="Slider" className="component-display" hoverable>
-            <Slider min={0} max={100} />
-            <Slider range min={0} max={100} />
+            <Slider defaultValue={25} min={0} max={100} />
+            <Slider defaultValue={[20, 42]} range min={0} max={100} />
+            <div style={{ height: 200, margin: "auto" }}>
+              <Slider vertical defaultValue={25} min={0} max={100} />
+            </div>
+          </Card>
+        </Col>
+
+        <Col className="component-col" justify="stretch">
+          <Card title="Test" className="component-display" hoverable>
           </Card>
         </Col>
       </Row>
