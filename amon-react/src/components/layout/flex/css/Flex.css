@@ -2,6 +2,7 @@
 .AmonReact-Col {
   display: flex;
   flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
 .AmonReact-Row {
