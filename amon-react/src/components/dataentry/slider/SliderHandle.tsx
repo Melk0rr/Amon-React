@@ -1,7 +1,9 @@
 import { useState, useEffect, FC, RefObject } from 'react'
 import { HTMLElementProps } from 'utils/types'
-import { round, percent } from 'utils/math'
+import { round } from 'utils/math'
+import { posToPercentage } from './utils/sliderUtils'
 
+// Prop types for SliderHandle component
 interface SliderHandleProps extends HTMLElementProps {
   defaultValue?: number,
   min: number,
@@ -11,8 +13,6 @@ interface SliderHandleProps extends HTMLElementProps {
   sliderRef: RefObject<HTMLDivElement>
   onChange?: (target: number) => void
 }
-
-const posToPercentage = (value: number, min: number, max: number): number => percent((value - min), (max - min))
 
 /**
  * SliderHandle component rendering and describing the behavior of a Slider component handle

@@ -1,19 +1,16 @@
 // General imports
 import { useState, useEffect, useRef, FC } from 'react'
-import { HTMLElementProps, BaseObject } from 'utils/types'
-import { percent } from 'utils/math'
+import { HTMLElementProps } from 'utils/types'
+import { posToPercentage } from './utils/sliderUtils'
 
 import SliderHandle from './SliderHandle'
+import SliderMarks, { SliderMarksType } from './SlideMarks'
 
 // Style imports
 import './css/Slider.css'
 
 type SliderHandleSort = {
   [key: string]: number
-}
-
-type SliderMarks = {
-  [key: number]: string | BaseObject
 }
 
 // Prop types for Slider component
@@ -26,11 +23,10 @@ interface SliderProps extends HTMLElementProps {
   range?: boolean,
   vertical?: boolean,
   showTrack?: boolean,
+  marks?: SliderMarksType,
   unit?: string,
   onChange?: (v: number | [number, number]) => void
 }
-
-const posToPercentage = (value: number, min: number, max: number): number => percent((value - min), (max - min))
 
 /**
  * Slider component rendering an 'input range' like UI element
@@ -46,6 +42,7 @@ const Slider: FC<SliderProps> = ({
   range = false,
   vertical = false,
   showTrack = true,
+  marks,
   unit,
   onChange,
   id,
